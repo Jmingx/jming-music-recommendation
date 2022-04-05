@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.BasicListSongRelationMapper">
+
+    <resultMap id="BaseResultMap" type="club.jming.musicSpider.domain.BasicListSongRelation">
+            <id property="listSongRelationId" column="list_song_relation_id" jdbcType="INTEGER"/>
+            <result property="listId" column="list_id" jdbcType="VARCHAR"/>
+            <result property="songId" column="song_id" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="showStatus" column="show_status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        list_song_relation_id,list_id,song_id,
+        update_time,show_status
+    </sql>
+</mapper>
