@@ -12,6 +12,7 @@
     <modules>
         <module>music-spider</module>
         <module>music-common</module>
+        <module>music-admin</module>
     </modules>
 
 </project>
