@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <input type="text" name="albumName" id="albumName">albumName</input><br>
+    <input type="text" name="singerId" id="singerId">singerId</input><br>
+    <input type="text" name="albumDescription" id="albumDescription">albumDescription</input><br>
+    <input type="file" name="imgSource" id="imgSource">imgSource</input><br>
+    <input type="text" name="showStatus" id="showStatus">showStatus</input><br>
+    <button onclick="login()">submit</button>
+</div>
+</body>
+
+<script type="text/javascript">
+    function login() {
+        var albumName = document.getElementById("albumName").value;
+        var singerId = document.getElementById("singerId").value;
+        var albumDescription = document.getElementById("albumDescription").value;
+        var imgSource = $("#imgSource")[0].files[0];
+        var showStatus = document.getElementById("showStatus").value;
+        var data = {
+            "albumName":albumName,
+            "singerId":singerId,
+            "albumDescription":albumDescription,
+            "showStatus":showStatus
+        }
+        var formData = new FormData();
+        formData.append("album",JSON.stringify(data));
+        formData.append("imgSource",$("#imgSource")[0].files[0]);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: 'http://localhost:8080/album/save',
+            // contentType: "application/json",
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (result) {
+                console.log("data is :" + result)
+                if (result.code == 0) {
+                    alert("OK");
+                } else {
+                    alert(result.message)
+                }
+            }
+        });
+    }
+</script>
+</html>
