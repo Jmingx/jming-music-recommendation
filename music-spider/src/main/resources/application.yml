@@ -1,9 +1,9 @@
 # 应用名称
 spring:
   application:
-   name: music-spider
+    name: music-spider
 
-# 配置数据源
+  # 配置数据源
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -22,6 +22,10 @@ spring:
     testOnBorrow: false
     testOnReturn: false
 
-1 logging:
-2   level:
-3     club.jming.musicSpider.mapper: debug
+logging:
+  level:
+    club.jming.musicSpider.mapper: debug
+
+server:
+  port: 8080
+

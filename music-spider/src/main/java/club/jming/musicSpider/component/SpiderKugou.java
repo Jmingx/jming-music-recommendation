@@ -5,6 +5,7 @@ import club.jming.musicSpider.domain.BasicMusic;
 import club.jming.musicSpider.domain.BasicSinger;
 import club.jming.musicSpider.dto.KugouMusicDTO;
 import club.jming.musicSpider.service.SpiderService;
+import club.jming.musicSpider.utils.Constant;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
@@ -53,16 +54,16 @@ public class SpiderKugou {
     private static final String albumIdRegex = "\"album_id\":(.*?),\"hash\"";
     private static final String unicodeRegex = "(\\\\u(\\p{XDigit}{4}))";
 
-    private static String baseUrl = "https://www.kugou.com/yy/special/single/3823475.html";
-    private static String albumUrl = "https://www.kugou.com/album/";
-    private static String singerUrl = "https://www.kugou.com/singer/";
-    private static String downloadMusicSrc = "D:/tmp/music/source/";
-    private static String downloadImgSrc = "D:/tmp/music/img/";
-    private static String downloadAlbumImgSrc = "D:/tmp/music/album/";
-    private static String downloadSingerImgSrc = "D:/tmp/music/singer/";
+//    private static String baseUrl = "https://www.kugou.com/yy/special/single/3823475.html";
+//    private static String albumUrl = "https://www.kugou.com/album/";
+//    private static String singerUrl = "https://www.kugou.com/singer/";
+//    private static String downloadMusicSrc = "D:/tmp/music/source/";
+//    private static String downloadImgSrc = "D:/tmp/music/img/";
+//    private static String downloadAlbumImgSrc = "D:/tmp/music/album/";
+//    private static String downloadSingerImgSrc = "D:/tmp/music/singer/";
 
     public List<KugouMusicDTO> parameter() {
-        return this.parameter(baseUrl);
+        return this.parameter(Constant.baseUrl);
     }
 
     /**
@@ -148,14 +149,15 @@ public class SpiderKugou {
                     singer.setUpdateTime(new Date());
 
                     try {
-                        Document singerDocument = Jsoup.connect(singerUrl + singerId + ".html").get();
+                        Document singerDocument = Jsoup.connect(Constant.singerUrl + singerId + ".html").get();
                         Elements singerDescriptionElement = singerDocument.select("body > div.wrap.clear_fix > div.sng_ins_1 > div.top > div > p");
                         singer.setSingerDescription(singerDescriptionElement.html());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    String singerImgAddress = downLoad(singerImgUrl,singerName,downloadSingerImgSrc+singerName+".jpg");
+//                    String singerImgAddress = downLoad(singerImgUrl,singerName,downloadSingerImgSrc+singerName+".jpg");
+                    String singerImgAddress = downLoad(singerImgUrl,singerName,Constant.SINGER_PIC_PATH+singerName+".jpg");
                     singer.setImgAddress(singerImgAddress);
                     singer.setSingerName(singerName);
                     log.info("============歌手名称==============" + singerName);
@@ -178,7 +180,7 @@ public class SpiderKugou {
                 String albumId = (String) dataJson.get("album_id");
                 String albumUrl0 = null;
                 try {
-                    Document albumDocument = Jsoup.connect(albumUrl+albumId+".html").get();
+                    Document albumDocument = Jsoup.connect(Constant.albumUrl+albumId+".html").get();
                     Element albumDescriptionElement = albumDocument.select("span:contains(简介)").first().parent();
                     basicAlbum.setAlbumDescription(albumDescriptionElement.text());
 
@@ -195,9 +197,12 @@ public class SpiderKugou {
                 }
 
                 //下载
-                String musicAddress = downLoad(songUrl, songName,downloadMusicSrc + songName + ".mp3");
-                String imgAddress = downLoad(imgUrl, songName,downloadImgSrc + songName + ".jpg");
-                String albumImgAddress = downLoad(albumUrl0,albumName,downloadAlbumImgSrc + songName + ".jpg");
+//                String musicAddress = downLoad(songUrl, songName,downloadMusicSrc + songName + ".mp3");
+                String musicAddress = downLoad(songUrl, songName,Constant.SONG_PATH + songName + ".mp3");
+//                String imgAddress = downLoad(imgUrl, songName,downloadImgSrc + songName + ".jpg");
+                String imgAddress = downLoad(imgUrl, songName,Constant.SONG_PIC_PATH + songName + ".jpg");
+//                String albumImgAddress = downLoad(albumUrl0,albumName,downloadAlbumImgSrc + songName + ".jpg");
+                String albumImgAddress = downLoad(albumUrl0,albumName,Constant.ALBUM_PIC_PATH + songName + ".jpg");
 
                 basicMusic.setMusicAddress(musicAddress);
                 basicMusic.setImgAddress(imgAddress);

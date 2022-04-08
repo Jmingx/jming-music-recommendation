@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="club.jming.modules.music.dao.MusicDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="club.jming.modules.music.entity.MusicEntity" id="musicMap">
+        <result property="musicId" column="music_id"/>
+        <result property="musicName" column="music_name"/>
+        <result property="singerId" column="singer_id"/>
+        <result property="albumId" column="album_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="musicAddress" column="music_address"/>
+        <result property="imgAddress" column="img_address"/>
+        <result property="clickNumber" column="click_number"/>
+        <result property="musicType" column="music_type"/>
+        <result property="showStatus" column="show_status"/>
+    </resultMap>
+
+
+</mapper>

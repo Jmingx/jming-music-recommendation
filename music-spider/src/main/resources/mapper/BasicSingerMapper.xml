@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="generator.mapper.BasicSingerMapper">
 
-    <resultMap id="BaseResultMap" type="generator.domain.BasicSinger">
+    <resultMap id="BaseResultMap" type="club.jming.musicSpider.domain.BasicSinger">
             <id property="singerId" column="singer_id" jdbcType="INTEGER"/>
             <result property="singerName" column="singer_name" jdbcType="VARCHAR"/>
             <result property="singerDescription" column="singer_description" jdbcType="VARCHAR"/>
