@@ -13,6 +13,8 @@
         <module>music-spider</module>
         <module>music-common</module>
         <module>music-admin</module>
+        <module>music-server</module>
+        <module>music-gengrator</module>
     </modules>
 
 </project>

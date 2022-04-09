@@ -81,8 +81,8 @@ public class MusicController {
     @RequiresPermissions("music:music:save")
     public club.jming.musicCommon.domain.R save(@RequestParam("music") String musicJSON, @RequestParam("musicSource") MultipartFile musicSource, @RequestParam("imgSource") MultipartFile imgSource){
         MusicEntity basicMusic = JSON.parseObject(musicJSON, MusicEntity.class);
-        String musicSourcePath = Constant.MUSIC_SRC + basicMusic.getMusicName() + ".mp3";
-        String musicImgSourcePath = Constant.IMG_SRC + basicMusic.getMusicName() + ".jpg";
+        String musicSourcePath = Constant.SONG_PATH + basicMusic.getMusicName() + ".mp3";
+        String musicImgSourcePath = Constant.SONG_PIC_PATH + basicMusic.getMusicName() + ".jpg";
         try {
             musicSource.transferTo(new File(musicSourcePath));
             imgSource.transferTo(new File(musicImgSourcePath));
@@ -118,8 +118,8 @@ public class MusicController {
     @RequiresPermissions("music:music:update")
     public club.jming.musicCommon.domain.R update(@RequestParam("music") String musicJSON, @RequestParam("musicSource")MultipartFile musicSource, @RequestParam("imgSource") MultipartFile imgSource){
         MusicEntity basicMusic = JSON.parseObject(musicJSON, MusicEntity.class);
-        String musicSourcePath = Constant.MUSIC_SRC + basicMusic.getMusicName() + ".mp3";
-        String musicImgSourcePath = Constant.IMG_SRC + basicMusic.getMusicName() + ".jpg";
+        String musicSourcePath = Constant.SONG_PATH + basicMusic.getMusicName() + ".mp3";
+        String musicImgSourcePath = Constant.SONG_PIC_PATH + basicMusic.getMusicName() + ".jpg";
         try {
             musicSource.transferTo(new File(musicSourcePath));
             imgSource.transferTo(new File(musicImgSourcePath));

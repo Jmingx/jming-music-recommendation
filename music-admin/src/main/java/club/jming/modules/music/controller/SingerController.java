@@ -58,7 +58,7 @@ public class SingerController {
     @RequiresPermissions("music:singer:save")
     public R save(@RequestParam("singer") String singerJSON, @RequestParam("imgSource") MultipartFile imgSource){
         SingerEntity basicSinger = JSON.parseObject(singerJSON, SingerEntity.class);
-        String singerImgPath = Constant.SINGER_IMG_SRC+basicSinger.getSingerName()+".jpg";
+        String singerImgPath = Constant.SINGER_PIC_PATH+basicSinger.getSingerName()+".jpg";
         try {
             imgSource.transferTo(new File(singerImgPath));
             basicSinger.setImgAddress(singerImgPath);
@@ -127,7 +127,7 @@ public class SingerController {
     @RequiresPermissions("music:singer:update")
     public R update(@RequestParam("singer") String singerJSON, @RequestParam("imgSource")MultipartFile imgSource){
         SingerEntity basicSinger = JSON.parseObject(singerJSON, SingerEntity.class);
-        String singerImgPath = Constant.SINGER_IMG_SRC+basicSinger.getSingerName()+".jpg";
+        String singerImgPath = Constant.SINGER_PIC_PATH+basicSinger.getSingerName()+".jpg";
         try {
             imgSource.transferTo(new File(singerImgPath));
             basicSinger.setImgAddress(singerImgPath);

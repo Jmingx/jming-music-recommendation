@@ -48,7 +48,7 @@ public class AlbumController {
     @RequiresPermissions("music:album:save")
     public R save(@RequestParam("album") String albumJSON, @RequestParam("imgSource") MultipartFile multipartFile) {
         AlbumEntity basicAlbum = JSON.parseObject(albumJSON, AlbumEntity.class);
-        String albumImgSrc = Constant.ALBUM_IMG_SRC + basicAlbum.getAlbumName() + ".jpg";
+        String albumImgSrc = Constant.ALBUM_PIC_PATH + basicAlbum.getAlbumName() + ".jpg";
         try {
             multipartFile.transferTo(new File(albumImgSrc));
             basicAlbum.setImgAddress(albumImgSrc);
@@ -141,7 +141,7 @@ public class AlbumController {
     @RequiresPermissions("music:album:update")
     public R update(@RequestParam("imgSource") MultipartFile multipartFile, @RequestParam("album") String albumJSON) {
         AlbumEntity basicAlbum = JSON.parseObject(albumJSON, AlbumEntity.class);
-        String albumImgSrc = Constant.ALBUM_IMG_SRC + basicAlbum.getAlbumName() + ".jpg";
+        String albumImgSrc = Constant.ALBUM_PIC_PATH + basicAlbum.getAlbumName() + ".jpg";
         try {
             multipartFile.transferTo(new File(albumImgSrc));
             basicAlbum.setImgAddress(albumImgSrc);
