@@ -53,12 +53,12 @@ public class SingerController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        singer.setName(name);
-        singer.setSex(new Byte(sex));
-        singer.setPic(pic);
-        singer.setBirth(myBirth);
-        singer.setLocation(location);
-        singer.setIntroduction(introduction);
+        singer.setSingerName(name);
+        singer.setGender(Integer.valueOf(sex));
+        singer.setImgAddress(pic);
+//        singer.set(myBirth);
+//        singer.setLocation(location);
+        singer.setSingerDescription(introduction);
 
         boolean res = singerService.addSinger(singer);
         if (res) {
@@ -120,13 +120,13 @@ public class SingerController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        singer.setId(Integer.parseInt(id));
-        singer.setName(name);
-        singer.setSex(new Byte(sex));
-        singer.setPic(pic);
-        singer.setBirth(myBirth);
-        singer.setLocation(location);
-        singer.setIntroduction(introduction);
+        singer.setSingerId(Integer.parseInt(id));
+        singer.setSingerName(name);
+        singer.setGender(Integer.valueOf(sex));
+        singer.setImgAddress(pic);
+//        singer.setBirth(myBirth);
+//        singer.setLocation(location);
+        singer.setSingerDescription(introduction);
 
         boolean res = singerService.updateSingerMsg(singer);
         if (res) {
@@ -163,8 +163,8 @@ public class SingerController {
         try {
             avatorFile.transferTo(dest);
             Singer singer = new Singer();
-            singer.setId(id);
-            singer.setPic(storeAvatorPath);
+            singer.setSingerId(id);
+            singer.setImgAddress(storeAvatorPath);
             boolean res = singerService.updateSingerPic(singer);
             if (res) {
                 jsonObject.put("code", 1);

@@ -43,27 +43,29 @@
         <yin-icon :icon="iconList.XIAZAI" @click="downloadMusic"></yin-icon>
         <!--歌曲列表-->
         <yin-icon :icon="iconList.LIEBIAO" @click="changeAside"></yin-icon>
+        <!--歌曲列表-->
+        <yin-icon :icon="iconList.LIEBIAO" @click="changeAside"></yin-icon>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapGetters } from "vuex"
+import {defineComponent} from "vue"
+import {mapGetters} from "vuex"
 import mixin from "@/mixins/mixin"
 import YinIcon from "./YinIcon.vue"
-import { HttpManager } from "@/api"
-import { formatSeconds } from "@/utils"
-import { ICON, LYRIC } from "@/enums"
+import {HttpManager} from "@/api"
+import {formatSeconds} from "@/utils"
+import {ICON, LYRIC} from "@/enums"
 
 export default defineComponent({
   setup() {
-    const { routerManager, playMusic, checkStatus } = mixin()
-    return { playMusic, routerManager, checkStatus }
+    const {routerManager, playMusic, checkStatus} = mixin()
+    return {playMusic, routerManager, checkStatus}
   },
   // mixins: [mixin],
-  data () {
+  data() {
     return {
       startTime: "00:00",
       endTime: "00:00",
@@ -109,27 +111,27 @@ export default defineComponent({
   },
   watch: {
     // 切换播放状态的图标
-    isPlay (value) {
+    isPlay(value) {
       this.$store.commit("setPlayBtnIcon", value ? ICON.ZANTING : ICON.BOFANG)
     },
-    volume () {
+    volume() {
       this.$store.commit("setVolume", this.volume / 100)
     },
     // 播放时间的开始和结束
-    curTime () {
+    curTime() {
       this.startTime = formatSeconds(this.curTime)
       this.endTime = formatSeconds(this.duration)
       // 移动进度条
       this.nowTime = (this.curTime / this.duration) * 100
     },
     // 自动播放下一首
-    autoNext () {
+    autoNext() {
       this.next()
     }
   },
   methods: {
     // 下载
-    async downloadMusic () {
+    async downloadMusic() {
       const result = await HttpManager.downloadMusic(this.songUrl) as { data: any }
       const eleLink = document.createElement("a")
       eleLink.download = `${this.singerName}-${this.songTitle}.mp3`
@@ -141,14 +143,14 @@ export default defineComponent({
       eleLink.click()
       document.body.removeChild(eleLink) // 移除
     },
-    changeAside () {
+    changeAside() {
       this.$store.commit("setShowAside", !this.showAside)
     },
     // 控制音乐播放 / 暂停
-    togglePlay () {
+    togglePlay() {
       this.$store.commit("setIsPlay", this.isPlay ? false : true)
     },
-    changeTime () {
+    changeTime() {
       this.$store.commit("setChangeTime", this.duration * (this.nowTime * 0.01))
     },
     changePlayState() {
@@ -156,64 +158,70 @@ export default defineComponent({
       this.playState = this.playStateList[this.playStateIndex]
     },
     // 上一首
-    prev () {
-      if (this.playState === ICON.LUANXU) {
-          let playIndex = Math.floor(Math.random() * this.currentPlayList.length)
-          playIndex = playIndex === this.currentPlayIndex ? playIndex + 1 : playIndex
-          this.$store.commit("setCurrentPlayIndex", playIndex)
-          this.toPlay(this.currentPlayList[playIndex].url)
-      } else if (this.currentPlayIndex !== -1 && this.currentPlayList.length > 1) {
-        if (this.currentPlayIndex > 0) {
-          this.$store.commit("setCurrentPlayIndex", this.currentPlayIndex - 1)
-          this.toPlay(this.currentPlayList[this.currentPlayIndex].url)
-        } else {
-          this.$store.commit("setCurrentPlayIndex", this.currentPlayList.length - 1)
-          this.toPlay(this.currentPlayList[this.currentPlayIndex].url)
-        }
-      }
-    },
-    // 下一首
-    next () {
+    prev() {
+      console.log("list:", this.currentPlayList, this.currentPlayIndex)
+      console.log("songId", this.songId)
+      console.log("title", this.songTitle)
       if (this.playState === ICON.LUANXU) {
         let playIndex = Math.floor(Math.random() * this.currentPlayList.length)
         playIndex = playIndex === this.currentPlayIndex ? playIndex + 1 : playIndex
         this.$store.commit("setCurrentPlayIndex", playIndex)
-        this.toPlay(this.currentPlayList[playIndex].url)
+        this.toPlay(this.currentPlayList[playIndex].musicAddress)
+        console.log("url", this.currentPlayList[playIndex])
+      } else if (this.currentPlayIndex !== -1 && this.currentPlayList.length > 1) {
+        if (this.currentPlayIndex > 0) {
+          this.$store.commit("setCurrentPlayIndex", this.currentPlayIndex - 1)
+          this.toPlay(this.currentPlayList[this.currentPlayIndex].musicAddress)
+        } else {
+          this.$store.commit("setCurrentPlayIndex", this.currentPlayList.length - 1)
+          this.toPlay(this.currentPlayList[this.currentPlayIndex].musicAddress)
+        }
+      }
+    },
+    // 下一首
+    next() {
+      if (this.playState === ICON.LUANXU) {
+        let playIndex = Math.floor(Math.random() * this.currentPlayList.length)
+        playIndex = playIndex === this.currentPlayIndex ? playIndex + 1 : playIndex
+        this.$store.commit("setCurrentPlayIndex", playIndex)
+        this.toPlay(this.currentPlayList[playIndex].musicAddress)
       } else if (this.currentPlayIndex !== -1 && this.currentPlayList.length > 1) {
         if (this.currentPlayIndex < this.currentPlayList.length - 1) {
           this.$store.commit("setCurrentPlayIndex", this.currentPlayIndex + 1)
-          this.toPlay(this.currentPlayList[this.currentPlayIndex].url)
+          this.toPlay(this.currentPlayList[this.currentPlayIndex].musicAddress)
         } else {
           this.$store.commit("setCurrentPlayIndex", 0)
-          this.toPlay(this.currentPlayList[0].url)
+          this.toPlay(this.currentPlayList[0].musicAddress)
         }
       }
     },
     // 选中播放
-    toPlay (url) {
+    toPlay(url) {
+      console.log("currentPlayList",this.currentPlayList)
       if (url && url !== this.songUrl) {
         const song = this.currentPlayList[this.currentPlayIndex]
-        this.playMusic({ 
-          id: song.id, 
-          url, 
-          pic: song.pic, 
+        console.log("song",song)
+        this.playMusic({
+          id: song.musicId,
+          url,
+          pic: song.imgAddress,
           index: this.currentPlayIndex,
-          name: song.name, 
-          lyric: song.lyric, 
-          currentSongList: this.currentPlayList 
+          name: song.musicName,
+          lyric: song.musicLyric,
+          currentSongList: this.currentPlayList
         })
       }
     },
-    goPlayerPage () {
-      this.routerManager(LYRIC, { path: `${LYRIC}/${this.songId}` })
+    goPlayerPage() {
+      this.routerManager(LYRIC, {path: `${LYRIC}/${this.songId}`})
     },
-    async collection () {
+    async collection() {
       if (!this.checkStatus()) return
-      
+
       const params = new URLSearchParams()
       params.append("userId", this.userId)
       params.append("type", "0") // 0 代表歌曲， 1 代表歌单
-      params.append("songId", this.songId)
+      params.append("musicId", this.songId)
 
       const result = await HttpManager.setCollection(params) as { code: number };
       if (result.code === 1) {

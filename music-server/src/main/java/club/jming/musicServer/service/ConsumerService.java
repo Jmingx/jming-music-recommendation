@@ -1,10 +1,11 @@
 package club.jming.musicServer.service;
 
 import club.jming.musicServer.domain.Consumer;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
-public interface ConsumerService {
+public interface ConsumerService extends IService<Consumer> {
 
     boolean addUser(Consumer consumer);
 

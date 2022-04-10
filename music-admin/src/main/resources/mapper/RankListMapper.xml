@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generator.mapper.RankListMapper">
+
+    <resultMap id="BaseResultMap" type="generator.domain.RankList">
+            <id property="rankListId" column="rank_list_id" jdbcType="BIGINT"/>
+            <result property="musicListId" column="music_list_id" jdbcType="BIGINT"/>
+            <result property="consumerId" column="consumer_id" jdbcType="BIGINT"/>
+            <result property="rankListScore" column="rank_list_score" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        rank_list_id,music_list_id,consumer_id,
+        rank_list_score
+    </sql>
+</mapper>

@@ -1,7 +1,7 @@
 <template>
   <div class="song-container">
     <div class="song-pic">
-      <img :src="songPic" />
+      <img :src="songPic"/>
     </div>
     <ul class="song-info">
       <li>歌手：{{ singerName }}</li>
@@ -10,39 +10,78 @@
   </div>
   <div class="container">
     <div class="lyric-container">
-      <div class="song-lyric">
-        <transition-group name="lyric-fade">
-          <!--有歌词-->
-          <ul
-            :style="{ top: lrcTop }"
-            class="has-lyric"
-            v-if="lyricArr.length"
-            key="has-lyric"
-          >
-            <li v-for="(item, index) in lyricArr" :key="index">
-              {{ item[1] }}
-            </li>
-          </ul>
-          <!--没歌词-->
-          <div v-else class="no-lyric" key="no-lyric">
-            <span>暂无歌词</span>
+
+      <el-container>
+        <el-header>
+          <div class="grid-content bg-purple-dark">
+            <div class="block" align="center">
+              <span class="demonstration">评分：</span>
+              <el-rate
+                  v-model=score
+                  :max=10
+                  :colors="colors"
+                  show-score="true"
+                  @click="change"
+                  :disabled="disable"
+              >
+              </el-rate>
+            </div>
           </div>
-        </transition-group>
-      </div>
+        </el-header>
+        <hr>
+        <el-main>
+          <div class="song-lyric">
+            <transition-group name="lyric-fade">
+              <!--有歌词-->
+              <ul
+                  :style="{ top: lrcTop }"
+                  class="has-lyric"
+                  v-if="lyricArr.length"
+                  key="has-lyric"
+              >
+                <li v-for="(item, index) in lyricArr" :key="index">
+                  {{ item[1] }}
+                </li>
+              </ul>
+              <!--没歌词-->
+              <div v-else class="no-lyric" key="no-lyric">
+                <span>暂无歌词</span>
+              </div>
+            </transition-group>
+          </div>
+
+        </el-main>
+      </el-container>
+
+      <hr>
+
       <comment :playId="songId" :type="0"></comment>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
-import { useStore} from "vuex";
+import {computed, defineComponent, ref, watch} from 'vue';
+import {useStore} from "vuex";
 import Comment from "@/components/Comment.vue";
-import { parseLyric } from "@/utils";
+import {parseLyric} from "@/utils";
+import {HttpManager} from "@/api";
+
+interface resContent {
+  code: number;
+  msg: string;
+  data: object;
+}
 
 export default defineComponent({
   components: {
     Comment,
+  },
+  data() {
+    return {
+      score: 0,
+      disable: false,
+    }
   },
   setup() {
     const store = useStore();
@@ -57,8 +96,11 @@ export default defineComponent({
     const songTitle = computed(() => store.getters.songTitle); // 歌名
     const singerName = computed(() => store.getters.singerName); // 歌手名
     const songPic = computed(() => store.getters.songPic); // 歌曲图片
+    const userId = computed(() => store.getters.userId);
+
     watch(songId, () => {
-      lyricArr.value = parseLyric(currentPlayList.value[currentPlayIndex.value].lyric);
+      console.log("watch cur",currentPlayList.value[currentPlayIndex.value])
+      lyricArr.value = parseLyric(currentPlayList.value[currentPlayIndex.value].musicLyric);
     })
     // 处理歌词位置及颜色
     watch(curTime, () => {
@@ -88,12 +130,58 @@ export default defineComponent({
       lrcTop,
       lyricArr,
       songId,
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+      userId
     }
   },
+  methods: {
+    change() {
+      console.log("change", this.score)
+      //上传分数
+      const params = new URLSearchParams();
+      params.append("musicId", this.songId);
+      params.append("consumerId", this.userId);
+      console.log("score", this.score)
+      params.append("score", this.score.toString());
+
+      HttpManager.setMusicRank(params).then((data) => {
+            let res = JSON.parse(JSON.stringify(data));
+            if (res && res.code == 0) {
+              if (this.score != 0) {
+                // this.disable = true;
+                console.log("ok", this.score)
+                this.init();
+              }
+            } else {
+              console.log("error", res.msg)
+            }
+          }
+      )
+    },
+
+    init() {
+      //加载初始化分数，(music_id,user_id)作为唯一索引，如果不存在，则把this.disable=true
+      HttpManager.getRankOfMusicId(this.songId).then((data) => {
+        let res = JSON.parse(JSON.stringify(data));
+        if (res && res.code == 0) {
+          this.score = res.score;
+          if (this.score != 0) {
+            // this.disable = true;
+            console.log("ok", this.score)
+          }
+        } else {
+          console.log("error", res.msg)
+        }
+      })
+    }
+  },
+  mounted() {
+    this.init();
+  }
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scored>
 @import "@/assets/css/var.scss";
 
 .container {
@@ -104,18 +192,22 @@ export default defineComponent({
   position: fixed;
   top: 120px;
   left: 50px;
+
   .song-pic {
     height: 300px;
     width: 300px;
     overflow: hidden;
     border: 4px solid white;
     border-radius: 12px;
+
     img {
       height: 100%;
     }
   }
+
   .song-info {
     width: 300px;
+
     li {
       width: 100%;
       line-height: 40px;
@@ -131,6 +223,7 @@ export default defineComponent({
   padding: 80px 20px 30px 20px;
   font-family: $font-family;
   background-color: $color-white;
+
   .song-lyric {
     position: relative;
     min-height: 300px;
@@ -140,6 +233,7 @@ export default defineComponent({
     .has-lyric {
       position: absolute;
       transition: all 1s;
+
       li {
         width: 100%;
         height: 40px;
@@ -148,6 +242,7 @@ export default defineComponent({
         line-height: 40px;
       }
     }
+
     .no-lyric {
       position: absolute;
       margin: 100px 0;

@@ -8,8 +8,6 @@
   <!--  推荐列表-->
   <play-list class="section" title="推荐" path="singer-detail" :playList="singerList"></play-list>
   <!--热门歌单-->
-  <play-list class="section" title="歌单" path="song-sheet-detail" :playList="songList"></play-list>
-  <!--热门歌手-->
   <play-list class="section" title="歌手" path="singer-detail" :playList="singerList"></play-list>
 </template>
 

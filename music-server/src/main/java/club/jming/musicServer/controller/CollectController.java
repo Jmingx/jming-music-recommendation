@@ -1,13 +1,11 @@
 package club.jming.musicServer.controller;
 
 import club.jming.musicServer.service.impl.CollectServiceImpl;
+import club.jming.musicServer.utils.R;
 import com.alibaba.fastjson.JSONObject;
 import club.jming.musicServer.domain.Collect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -25,14 +23,14 @@ public class CollectController {
         JSONObject jsonObject = new JSONObject();
         String user_id = req.getParameter("userId");
         String type = req.getParameter("type");
-        String song_id = req.getParameter("songId");
-        String song_list_id = req.getParameter("songListId");
+        String music_id = req.getParameter("musicId");
+        String music_list_id = req.getParameter("musicListId");
 
-        if (song_id == "") {
+        if (music_id == "") {
             jsonObject.put("code", 0);
             jsonObject.put("msg", "收藏歌曲为空");
             return jsonObject;
-        } else if (collectService.existSongId(Integer.parseInt(user_id), Integer.parseInt(song_id))) {
+        } else if (collectService.existMusicId(Integer.parseInt(user_id), Integer.parseInt(music_id))) {
             jsonObject.put("code", 2);
             jsonObject.put("msg", "已收藏");
             return jsonObject;
@@ -42,11 +40,11 @@ public class CollectController {
         collect.setUserId(Integer.parseInt(user_id));
         collect.setType(new Byte(type));
         if (new Byte(type) == 0) {
-            collect.setSongId(Integer.parseInt(song_id));
+            collect.setMusicId(Integer.parseInt(music_id));
         } else if (new Byte(type) == 1) {
-            collect.setSongListId(Integer.parseInt(song_list_id));
+            collect.setMusicListId(Integer.parseInt(music_list_id));
         }
-        collect.setCreateTime(new Date());
+        collect.setUpdateTime(new Date());
 
         boolean res = collectService.addCollection(collect);
         if (res) {
@@ -77,8 +75,8 @@ public class CollectController {
     @RequestMapping(value = "/collection/delete", method = RequestMethod.GET)
     public Object deleteCollection(HttpServletRequest req) {
         String user_id = req.getParameter("userId").trim();
-        String song_id = req.getParameter("songId").trim();
-        return collectService.deleteCollect(Integer.parseInt(user_id), Integer.parseInt(song_id));
+        String music_id = req.getParameter("musicId").trim();
+        return collectService.deleteCollect(Integer.parseInt(user_id), Integer.parseInt(music_id));
     }
 
     // 更新收藏
@@ -89,14 +87,14 @@ public class CollectController {
         String id = req.getParameter("id").trim();
         String user_id = req.getParameter("userId").trim();
         String type = req.getParameter("type").trim();
-        String song_id = req.getParameter("songId").trim();
-        // String song_list_id = req.getParameter("songListId").trim();
+        String music_id = req.getParameter("musicId").trim();
+        // String music_list_id = req.getParameter("musicListId").trim();
 
         Collect collect = new Collect();
-        collect.setId(Integer.parseInt(id));
+        collect.setCollectId(Integer.parseInt(id));
         collect.setUserId(Integer.parseInt(user_id));
         collect.setType(new Byte(type));
-        collect.setSongId(Integer.parseInt(song_id));
+        collect.setMusicId(Integer.parseInt(music_id));
 
         boolean res = collectService.updateCollectMsg(collect);
         if (res) {

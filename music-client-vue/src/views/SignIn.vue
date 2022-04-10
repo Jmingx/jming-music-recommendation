@@ -106,6 +106,7 @@ export default defineComponent({
             type: result.type,
           });
           setUserInfo(result.userMsg[0]);
+          console.log(result);
           setTimeout(() => {
             if (result.success) {
               changeIndex(NAV_NAME.HOME);
@@ -124,9 +125,9 @@ export default defineComponent({
     }
 
     function setUserInfo(item) {
-      proxy.$store.commit("setUserId", item.id);
-      proxy.$store.commit("setUsername", item.username);
-      proxy.$store.commit("setUserPic", item.avator);
+      proxy.$store.commit("setUserId", item.consumerId);
+      proxy.$store.commit("setUsername", item.consumerUsername);
+      proxy.$store.commit("setUserPic", item.consumerAvator);
       proxy.$store.commit("setToken", true);
     }
     function handleSignUp() {

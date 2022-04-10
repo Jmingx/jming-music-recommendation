@@ -120,7 +120,9 @@ public class SpiderKugou {
                 log.error("数组形式暂时不处理");
                 continue;
             }else {
+
                 dataJson = (JSONObject) jsonObject.get("data");
+
                 String imgUrl = (String) dataJson.get("img");
                 String songUrl = (String) dataJson.get("play_url");
                 if (StringUtils.isEmpty(imgUrl) || StringUtils.isEmpty(songUrl)){
@@ -129,6 +131,12 @@ public class SpiderKugou {
 
                 String albumName = (String) dataJson.get("album_name");
                 String songName = (String) dataJson.get("song_name");
+                String lyric = (String) dataJson.get("lyrics") ;
+                StringBuilder sb = new StringBuilder();
+                for (String s : lyric.split("rn")) {
+                    sb.append(s+"\r\n");
+                }
+                String lyrics = sb.toString();
                 List<BasicSinger> singers = new LinkedList<>();
                 log.info("============封面地址==============:{}" + imgUrl);
                 log.info("============歌曲地址==============" + songUrl);
@@ -169,6 +177,7 @@ public class SpiderKugou {
                 BasicMusic basicMusic = new BasicMusic();
 
                 basicMusic.setMusicName(songName);
+                basicMusic.setMusicLyric(lyrics);
                 basicMusic.setUpdateTime(new Date());
 
                 kugouMusicDTO.setMusic(basicMusic);
@@ -231,7 +240,7 @@ public class SpiderKugou {
                     //执行
                     .execute();
             ByteArrayInputStream stream = new ByteArrayInputStream(response.bodyAsBytes());
-            FileUtils.copyInputStreamToFile(stream, new File(target));
+            FileUtils.copyInputStreamToFile(stream, new File(Constant.PROJECT_PATH+target));
             return target;
         } catch (Exception e) {
             log.info("链接->" + musicUrl + " ＞﹏＜ 下载失败");

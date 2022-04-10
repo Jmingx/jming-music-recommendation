@@ -9,8 +9,8 @@
     >
       <el-table-column type="index" width="50" />
       <el-table-column prop="songName" label="歌曲名" />
-      <el-table-column prop="singerName" label="歌手" />
-      <el-table-column prop="introduction" label="专辑" />
+<!--      <el-table-column prop="singerName" label="歌手" />-->
+<!--      <el-table-column prop="introduction" label="专辑" />-->
     </el-table>
   </div>
 </template>
@@ -30,22 +30,31 @@ export default defineComponent({
     const dataList = computed(() => {
       const list = [];
       songList.value.forEach((item: any, index) => {
-        item["songName"] = getSongTitle(item.name);
+        console.log("JSON",JSON.parse(JSON.stringify(item)));
+        console.log("item",item);
+        item["songName"] = getSongTitle(item.musicName);
         item["singerName"] = getSingerName(item.name);
-        item["index"] = index;
+        // item["songName"] = JSON.parse(JSON.stringify(item)).musicName
+        // item["singerName"] = getSingerName(item.name);
+        // item["index"] = index;
+        // list.push({
+        //   "songName":JSON.parse(JSON.stringify(item)).musicName,
+        //   "index":index
+        // });
         list.push(item);
       });
+      console.log("list",list);
       return list;
     });
 
     function handleClick(row) {
       playMusic({
-        id: row.id,
-        url: row.url,
-        pic: row.pic,
+        id: row.musicId,
+        url: row.musicAddress,
+        pic: row.imgAddress,
         index: row.index,
-        name: row.name,
-        lyric: row.lyric,
+        name: row.musicName,
+        lyric: row.musicLyric,
         currentSongList: songList.value,
       });
     }

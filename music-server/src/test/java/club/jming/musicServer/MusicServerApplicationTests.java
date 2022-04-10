@@ -92,16 +92,16 @@ public class MusicServerApplicationTests {
     public void consumerTest() {
 
         Consumer consumer = new Consumer();
-        consumer.setUsername("test");
-        consumer.setPassword("123");
-        consumer.setSex(new Byte("0"));
-        consumer.setPhoneNum("15666412237");
-        consumer.setEmail("1239679@qq.com");
-        consumer.setBirth(new Date());
-        consumer.setIntroduction("");
-        consumer.setLocation("");
-        consumer.setAvator("/img/avatorImages/user.jpg");
-        consumer.setCreateTime(new Date());
+        consumer.setConsumerUsername("test");
+        consumer.setConsumerPassword("123");
+        consumer.setConsumerSex(new Byte("0"));
+        consumer.setConsumerPhoneNum("15666412237");
+        consumer.setConsumerEmail("1239679@qq.com");
+        consumer.setConsumerBirth(new Date());
+        consumer.setConsumerIntroduction("");
+        consumer.setConsumerLocation("");
+        consumer.setConsumerAvator("/img/avatorImages/user.jpg");
+        consumer.setConsumerCreateTime(new Date());
         consumer.setUpdateTime(new Date());
         consumerService.addUser(consumer);
     }

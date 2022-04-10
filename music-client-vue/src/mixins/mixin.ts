@@ -54,12 +54,14 @@ export default function () {
 
   // 获取歌曲名
   function getSongTitle(str) {
-    return str.split("-")[1];
+    // return str.split("-")[1];
+      return str;
   }
 
   // 获取歌手名
   function getSingerName(str) {
-    return str.split("-")[0];
+    // return str.split("-")[0];
+      return str;
   }
 
   function checkStatus() {

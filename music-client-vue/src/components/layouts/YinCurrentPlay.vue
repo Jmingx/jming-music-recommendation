@@ -9,15 +9,15 @@
           :class='{"is-play": songId === item.id}'
           :key='index'
           @click='playMusic({
-            id: item.id,
-            url: item.url,
-            pic: item.pic,
+            id: item.musicId,
+            url: item.musicAddress,
+            pic: item.imgAddress,
             index: index,
-            name: item.name,
-            lyric: item.lyric,
+            name: item.musicName,
+            lyric: item.musicLyric,
             currentSongList: currentPlayList
           })'>
-          {{getSongTitle(item.name)}}
+          {{getSongTitle(item.musicName)}}
         </li>
       </ul>
     </div>

@@ -7,7 +7,7 @@
         :class="{ active: item.name === activeName }"
         @click="handleChangeView(item)"
       >
-        {{ item.name }}
+        {{ item.musicName }}
       </li>
     </ul>
     <play-list :playList="data" path="song-sheet-detail"></play-list>

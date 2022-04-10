@@ -10,7 +10,7 @@
         {{ item.name }}
       </li>
       <!--搜索框-->
-      <li class="header-search"> 
+      <li class="header-search">
         <input type="text" placeholder="搜索音乐" @keyup.enter="goSearch()" v-model="keywords">
       </li>
     </ul>
@@ -20,9 +20,11 @@
         {{ item.name }}
       </li>
     </ul>
+    <span>{{userName}}</span>
     <el-dropdown class="header-right" v-if="token" trigger="click">
       <div class="user">
-        <img :src="attachImageUrl(userPic)" alt="">
+<!--        <img :src="attachImageUrl(userPic)" alt="">-->
+        <img src="../../assets/images/user.jpg" alt="">
       </div>
       <template #dropdown>
         <el-dropdown-menu>
@@ -76,6 +78,7 @@ export default defineComponent({
     const activeNavName = computed(() => store.getters.activeNavName);
     const userPic = computed(() => store.getters.userPic);
     const token = computed(() => store.getters.token);
+    const userName = computed(() => store.getters.username);
 
     function goPage (path, name) {
       if (!path && !name) {
@@ -123,6 +126,7 @@ export default defineComponent({
       goPage,
       goMenuList,
       goSearch,
+      userName,
       attachImageUrl,
     }
   },

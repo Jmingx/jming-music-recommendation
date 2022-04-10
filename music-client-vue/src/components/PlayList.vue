@@ -4,12 +4,12 @@
     <ul class="section-content">
       <li class="content-item" v-for="(item, index) in playList" :key="index">
         <div class="kuo" @click="goAblum(item)">
-          <img class="item-img" :src="attachImageUrl(item.pic)" alt="" />
+          <img class="item-img" :src="attachImageUrl(item.imgAddress)" alt="" />
           <div class="mask" @click="goAblum(item)">
             <yin-icon :icon="BOFANG"></yin-icon>
           </div>
         </div>
-        <p class="item-name">{{ item.name || item.title }}</p>
+        <p class="item-name">{{ item.singerName || item.musicListTitle }}</p>
       </li>
     </ul>
   </div>

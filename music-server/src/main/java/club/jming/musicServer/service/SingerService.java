@@ -1,10 +1,11 @@
 package club.jming.musicServer.service;
 
 import club.jming.musicServer.domain.Singer;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
-public interface SingerService {
+public interface SingerService extends IService<Singer> {
 
     boolean addSinger (Singer singer);
 
@@ -19,4 +20,6 @@ public interface SingerService {
     List<Singer> singerOfName(String name);
 
     List<Singer> singerOfSex(Integer sex);
+
+    Integer getIdByName(String name);
 }

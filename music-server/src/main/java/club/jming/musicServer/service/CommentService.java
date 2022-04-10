@@ -1,10 +1,11 @@
 package club.jming.musicServer.service;
 
 import club.jming.musicServer.domain.Comment;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
-public interface CommentService {
+public interface CommentService extends IService<Comment> {
 
     boolean addComment(Comment comment);
 
@@ -14,8 +15,8 @@ public interface CommentService {
 
     List<Comment> allComment();
 
-    List<Comment> commentOfSongId(Integer songId);
+    List<Comment> commentOfMusicId(Integer MusicId);
 
-    List<Comment> commentOfSongListId(Integer songListId);
+    List<Comment> commentOfMusicListId(Integer MusicListId);
 
 }

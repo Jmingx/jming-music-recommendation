@@ -75,6 +75,12 @@ public class BasicMusic implements Serializable {
     @TableField(value = "show_status")
     private Integer showStatus;
 
+    /**
+     * 歌词
+     */
+    @TableField(value = "music_lyric")
+    private String musicLyric;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

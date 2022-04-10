@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="club.jming.musicServer.dao.SongMapper">
-  <resultMap id="BaseResultMap" type="club.jming.musicServer.domain.Song">
+<mapper namespace="demo.club.jming.musicServer.dao.MusicMapper">
+  <resultMap id="BaseResultMap" type="club.jming.musicServer.domain.Music">
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="singer_id" property="singerId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -11,7 +11,7 @@
     <result column="pic" property="pic" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="club.jming.musicServer.domain.Song" extends="BaseResultMap">
+  <resultMap id="ResultMapWithBLOBs" type="club.jming.musicServer.domain.Music" extends="BaseResultMap">
     <result column="lyric" property="lyric" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -53,11 +53,11 @@
     delete from song
     where id = #{id, jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="club.jming.musicServer.domain.Song">
+  <insert id="insert" parameterType="club.jming.musicServer.domain.Music">
     insert into song (id, singer_id, name, introduction, create_time, update_time, pic, lyric)
     values (#{id,jdbcType=INTEGER}, #{singerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{pic,jdbcType=VARCHAR}, #{lyric,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="club.jming.musicServer.domain.Song">
+  <insert id="insertSelective" parameterType="club.jming.musicServer.domain.Music">
     insert into song
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -109,7 +109,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateSongMsg" parameterType="club.jming.musicServer.domain.Song">
+  <update id="updateSongMsg" parameterType="club.jming.musicServer.domain.Music">
     update song
     <set >
       <if test="singerId != null">
@@ -154,7 +154,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="club.jming.musicServer.domain.Song">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="club.jming.musicServer.domain.Music">
     update song
     set singer_id = #{singerId,jdbcType=INTEGER},
     name = #{name,jdbcType=VARCHAR},
@@ -166,7 +166,7 @@
     lyric = #{lyric,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="club.jming.musicServer.domain.Song">
+  <update id="updateByPrimaryKey" parameterType="club.jming.musicServer.domain.Music">
     update song
     set singer_id = #{singerId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},

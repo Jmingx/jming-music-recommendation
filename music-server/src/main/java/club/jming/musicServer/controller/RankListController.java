@@ -22,14 +22,14 @@ public class RankListController {
     @RequestMapping(value = "/rankList/add", method = RequestMethod.POST)
     public Object addRank(HttpServletRequest req) {
         JSONObject jsonObject = new JSONObject();
-        String songListId = req.getParameter("songListId").trim();
+        String musicListId = req.getParameter("musicListId").trim();
         String consumerId = req.getParameter("consumerId").trim();
         String score = req.getParameter("score").trim();
 
         RankList rank_list = new RankList();
-        rank_list.setSongListId(Long.parseLong(songListId));
+        rank_list.setMusicListId(Long.parseLong(musicListId));
         rank_list.setConsumerId(Long.parseLong(consumerId));
-        rank_list.setScore(Integer.parseInt(score));
+        rank_list.setRankListScore(Integer.parseInt(score));
 
         boolean res = rankListService.addRank(rank_list);
         if (res) {
@@ -45,16 +45,16 @@ public class RankListController {
 
     // 获取指定歌单的评分
     @RequestMapping(value = "/rankList", method = RequestMethod.GET)
-    public Object rankOfSongListId(HttpServletRequest req) {
-        String songListId = req.getParameter("songListId");
-        return rankListService.rankOfSongListId(Long.parseLong(songListId));
+    public Object rankOfMusicListId(HttpServletRequest req) {
+        String musicListId = req.getParameter("musicListId");
+        return rankListService.rankOfMusicListId(Long.parseLong(musicListId));
     }
 
     // 获取指定用户的歌单评分
     @RequestMapping(value = "/rankList/user", method = RequestMethod.GET)
     public Object getUserRank(HttpServletRequest req) {
         String consumerId = req.getParameter("consumerId");
-        String songListId = req.getParameter("songListId");
-        return rankListService.getUserRank(Long.parseLong(consumerId), Long.parseLong(songListId));
+        String musicListId = req.getParameter("musicListId");
+        return rankListService.getUserRank(Long.parseLong(consumerId), Long.parseLong(musicListId));
     }
 }

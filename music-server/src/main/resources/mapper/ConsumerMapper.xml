@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="club.jming.musicServer.dao.ConsumerMapper">
+<mapper namespace="demo.club.jming.musicServer.dao.ConsumerMapper">
   <resultMap id="BaseResultMap" type="club.jming.musicServer.domain.Consumer">
     <result column="id" property="id" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
@@ -25,7 +25,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="verifyPassword" resultType="java.lang.Integer">
-    SELECT count(*) FROM consumer where username = #{username} and password = #{password} ;
+    SELECT count(*) FROM consumer where username = #{0} and password = #{1} ;
   </select>
   <select id="existUsername" resultType="java.lang.Integer" parameterType="java.lang.String">
     select count(*)

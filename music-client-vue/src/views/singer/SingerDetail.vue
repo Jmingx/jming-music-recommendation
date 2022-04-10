@@ -2,20 +2,20 @@
   <el-container class="singer-detail">
     <el-aside class="album-slide">
       <div class="singer-img">
-        <img :src="attachImageUrl(songDetails.pic)" alt="" />
+        <img :src="attachImageUrl(songDetails.imgAddress)" alt="" />
       </div>
       <ul class="album-info">
         <li v-if="songDetails.sex !== 2">
-          性别：{{ getUserSex(songDetails.sex) }}
+          性别：{{ getUserSex(songDetails.gender) }}
         </li>
-        <li>生日：{{ getBirth(songDetails.birth) }}</li>
-        <li>故乡：{{ songDetails.location }}</li>
+<!--        <li>生日：{{ getBirth(songDetails.birth) }}</li>-->
+<!--        <li>故乡：{{ songDetails.location }}</li>-->
       </ul>
     </el-aside>
     <el-main class="album-main">
       <div class="intro">
         <h2>{{ songDetails.name }}</h2>
-        <span>{{ songDetails.introduction }}</span>
+        <span>{{ songDetails.singerDescription }}</span>
       </div>
       <div class="album-body">
         <song-list :songList="currentSongList"></song-list>
@@ -44,7 +44,7 @@ export default defineComponent({
 
     onMounted(async () => {
       try {
-        const result = (await HttpManager.getSongOfSingerId(songDetails.value.id)) as any[];
+        const result = (await HttpManager.getSongOfSingerId(songDetails.value.singerId)) as any[];
         currentSongList.value = result;
       } catch (error) {
         console.error(error);

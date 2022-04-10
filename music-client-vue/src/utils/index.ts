@@ -5,7 +5,7 @@ export function getDateTime(date = new Date()) {
 
 // 解析歌词
 export function parseLyric(text) {
-  let lines = text.split("\n");
+  let lines = text.split("\r\n");
   const pattern = /\[\d{2}:\d{2}.(\d{3}|\d{2})\]/g;
   const result = [];
 

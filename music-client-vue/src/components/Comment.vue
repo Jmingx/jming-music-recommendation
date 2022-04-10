@@ -24,13 +24,13 @@
         <div class='popular-msg'>
           <ul>
             <li class='name'>{{userNameList[index]}}</li>
-            <li class='time'>{{item.createTime}}</li>
-            <li class='content'>{{item.content}}</li>
+            <li class='time'>{{item.updateTime}}</li>
+            <li class='content'>{{item.commentContent}}</li>
           </ul>
         </div>
-        <div class='up' ref='up' @click='setSupport(item.id, item.up, index)'>
+        <div class='up' ref='up' @click='setSupport(item.commentId, item.commentUp, index)'>
           <yin-icon :icon="iconList.ZAN"></yin-icon>
-          {{item.up}}
+          {{item.commentUp}}
         </div>
       </li>
     </ul>
@@ -106,7 +106,7 @@ export default defineComponent({
       if (type.value === 1) {
         params.append('songListId', `${playId.value}`)
       } else if (type.value === 0) {
-        params.append('songId', `${playId.value}`)
+        params.append('musicId', `${playId.value}`)
       }
       params.append('userId', userId.value)
       params.append('type', `${type.value}`)

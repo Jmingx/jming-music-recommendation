@@ -2,7 +2,7 @@ package club.jming.musicServer.constant;
 
 public class Constants {
 
-    public static final String PROJECT_PATH = System.getProperty("user.dir") + "/source";;
+    public static final String PROJECT_PATH = "file:" + System.getProperty("user.dir") + "/source";;
 
     /* 歌曲图片，歌手图片，歌曲文件，歌单图片等文件的存放路径 */
     /**

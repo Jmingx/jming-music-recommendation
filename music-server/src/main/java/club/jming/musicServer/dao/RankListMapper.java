@@ -1,35 +1,36 @@
 package club.jming.musicServer.dao;
 
 import club.jming.musicServer.domain.RankList;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RankListMapper {
+public interface RankListMapper extends BaseMapper<RankList> {
 
-    int insert(RankList record);
-
-    int insertSelective(RankList record);
-
+//    int insert(RankList record);
+//
+//    int insertSelective(RankList record);
+//
     /**
      * 查总分
-     * @param songListId
+     * @param musicListId
      * @return
      */
-    int selectScoreSum(@Param("songListId") Long songListId);
-
+    int selectScoreSum(@Param("musicListId") Long musicListId);
+//
     /**
      * 查总评分人数
-     * @param songListId
+     * @param musicListId
      * @return
      */
-    int selectRankNum(@Param("songListId") Long songListId);
-
-    /**
-     * 查制定用户评分
-     * @param consumerId
-     * @param songListId
-     * @return
-     */
-    int selectUserRank(@Param("consumerId") Long consumerId, @Param("songListId")  Long songListId);
+    int selectRankNum(@Param("musicListId") Long musicListId);
+//
+//    /**
+//     * 查制定用户评分
+//     * @param consumerId
+//     * @param MusicListId
+//     * @return
+//     */
+//    int selectUserRank(@Param("consumerId") Long consumerId, @Param("MusicListId")  Long MusicListId);
 }

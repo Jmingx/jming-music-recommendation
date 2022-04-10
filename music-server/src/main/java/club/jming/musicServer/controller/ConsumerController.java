@@ -65,25 +65,25 @@ public class ConsumerController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        consumer.setUsername(username);
-        consumer.setPassword(password);
-        consumer.setSex(new Byte(sex));
+        consumer.setConsumerUsername(username);
+        consumer.setConsumerPassword(password);
+        consumer.setConsumerSex(new Byte(sex));
         if ("".equals(phone_num)) {
-            consumer.setPhoneNum(null);
+            consumer.setConsumerPhoneNum(null);
         } else {
-            consumer.setPhoneNum(phone_num);
+            consumer.setConsumerPhoneNum(phone_num);
         }
 
         if ("".equals(email)) {
-            consumer.setEmail(null);
+            consumer.setConsumerEmail(null);
         } else {
-            consumer.setEmail(email);
+            consumer.setConsumerEmail(email);
         }
-        consumer.setBirth(myBirth);
-        consumer.setIntroduction(introduction);
-        consumer.setLocation(location);
-        consumer.setAvator(avator);
-        consumer.setCreateTime(new Date());
+        consumer.setConsumerBirth(myBirth);
+        consumer.setConsumerIntroduction(introduction);
+        consumer.setConsumerLocation(location);
+        consumer.setConsumerAvator(avator);
+        consumer.setConsumerCreateTime(new Date());
         consumer.setUpdateTime(new Date());
 
         try {
@@ -196,15 +196,15 @@ public class ConsumerController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        consumer.setId(Integer.parseInt(id));
-        consumer.setUsername(username);
-        consumer.setPassword(password);
-        consumer.setSex(new Byte(sex));
-        consumer.setPhoneNum(phone_num);
-        consumer.setEmail(email);
-        consumer.setBirth(myBirth);
-        consumer.setIntroduction(introduction);
-        consumer.setLocation(location);
+        consumer.setConsumerId(Integer.parseInt(id));
+        consumer.setConsumerUsername(username);
+        consumer.setConsumerPassword(password);
+        consumer.setConsumerSex(new Byte(sex));
+        consumer.setConsumerPassword(phone_num);
+        consumer.setConsumerEmail(email);
+        consumer.setConsumerBirth(myBirth);
+        consumer.setConsumerIntroduction(introduction);
+        consumer.setConsumerLocation(location);
         // consumer.setAvator(avator);
         consumer.setUpdateTime(new Date());
 
@@ -243,8 +243,8 @@ public class ConsumerController {
         try {
             avatorFile.transferTo(dest);
             Consumer consumer = new Consumer();
-            consumer.setId(id);
-            consumer.setAvator(storeAvatorPath);
+            consumer.setConsumerId(id);
+            consumer.setConsumerAvator(storeAvatorPath);
             boolean res = consumerService.updateUserAvator(consumer);
             if (res) {
                 jsonObject.put("code", 1);

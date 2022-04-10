@@ -24,20 +24,20 @@ public class CommentController {
         JSONObject jsonObject = new JSONObject();
         String user_id = req.getParameter("userId");
         String type = req.getParameter("type");
-        String song_list_id = req.getParameter("songListId");
-        String song_id = req.getParameter("songId");
+        String music_list_id = req.getParameter("musicListId");
+        String music_id = req.getParameter("musicId");
         String content = req.getParameter("content").trim();
 
         Comment comment = new Comment();
         comment.setUserId(Integer.parseInt(user_id));
-        comment.setType(new Byte(type));
+        comment.setCommentType(new Byte(type));
         if (new Byte(type) == 0) {
-            comment.setSongId(Integer.parseInt(song_id));
+            comment.setMusicId(Integer.parseInt(music_id));
         } else if (new Byte(type) == 1) {
-            comment.setSongListId(Integer.parseInt(song_list_id));
+            comment.setMusicListId(Integer.parseInt(music_list_id));
         }
-        comment.setContent(content);
-        comment.setCreateTime(new Date());
+        comment.setCommentContent(content);
+        comment.setUpdateTime(new Date());
         boolean res = commentService.addComment(comment);
         if (res) {
             jsonObject.put("code", 1);
@@ -57,17 +57,17 @@ public class CommentController {
     }
 
     // 获得指定歌曲ID的评论列表
-    @RequestMapping(value = "/comment/song/detail", method = RequestMethod.GET)
-    public Object commentOfSongId(HttpServletRequest req) {
-        String songId = req.getParameter("songId");
-        return commentService.commentOfSongId(Integer.parseInt(songId));
+    @RequestMapping(value = "/comment/music/detail", method = RequestMethod.GET)
+    public Object commentOfMusicId(HttpServletRequest req) {
+        String musicId = req.getParameter("musicId");
+        return commentService.commentOfMusicId(Integer.parseInt(musicId));
     }
 
     // 获得指定歌单ID的评论列表
-    @RequestMapping(value = "/comment/songList/detail", method = RequestMethod.GET)
-    public Object commentOfSongListId(HttpServletRequest req) {
-        String songListId = req.getParameter("songListId");
-        return commentService.commentOfSongListId(Integer.parseInt(songListId));
+    @RequestMapping(value = "/comment/musicList/detail", method = RequestMethod.GET)
+    public Object commentOfMusicListId(HttpServletRequest req) {
+        String musicListId = req.getParameter("musicListId");
+        return commentService.commentOfMusicListId(Integer.parseInt(musicListId));
     }
 
     // 点赞
@@ -79,8 +79,8 @@ public class CommentController {
         String up = req.getParameter("up").trim();
 
         Comment comment = new Comment();
-        comment.setId(Integer.parseInt(id));
-        comment.setUp(Integer.parseInt(up));
+        comment.setCommentId(Integer.parseInt(id));
+        comment.setCommentUp(Integer.parseInt(up));
         boolean res = commentService.updateCommentMsg(comment);
         if (res) {
             jsonObject.put("code", 1);
@@ -107,29 +107,29 @@ public class CommentController {
         JSONObject jsonObject = new JSONObject();
         String id = req.getParameter("id").trim();
         String user_id = req.getParameter("userId").trim();
-        String song_id = req.getParameter("songId").trim();
-        String song_list_id = req.getParameter("songListId").trim();
+        String music_id = req.getParameter("musicId").trim();
+        String music_list_id = req.getParameter("musicListId").trim();
         String content = req.getParameter("content").trim();
         String type = req.getParameter("type").trim();
         String up = req.getParameter("up").trim();
 
         Comment comment = new Comment();
-        comment.setId(Integer.parseInt(id));
+        comment.setCommentId(Integer.parseInt(id));
         comment.setUserId(Integer.parseInt(user_id));
-        if (song_id == "") {
-            comment.setSongId(null);
+        if (music_id == "") {
+            comment.setMusicId(null);
         } else {
-            comment.setSongId(Integer.parseInt(song_id));
+            comment.setMusicId(Integer.parseInt(music_id));
         }
 
-        if (song_list_id == "") {
-            comment.setSongListId(null);
+        if (music_list_id == "") {
+            comment.setMusicListId(null);
         } else {
-            comment.setSongListId(Integer.parseInt(song_list_id));
+            comment.setMusicListId(Integer.parseInt(music_list_id));
         }
-        comment.setContent(content);
-        comment.setType(new Byte(type));
-        comment.setUp(Integer.parseInt(up));
+        comment.setCommentContent(content);
+        comment.setCommentType(new Byte(type));
+        comment.setCommentUp(Integer.parseInt(up));
 
         boolean res = commentService.updateCommentMsg(comment);
         if (res) {
