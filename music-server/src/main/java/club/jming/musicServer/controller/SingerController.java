@@ -2,6 +2,7 @@ package club.jming.musicServer.controller;
 
 import club.jming.musicServer.constant.Constants;
 import club.jming.musicServer.service.impl.SingerServiceImpl;
+import club.jming.musicServer.utils.R;
 import com.alibaba.fastjson.JSONObject;
 import club.jming.musicServer.domain.Singer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,22 @@ public class SingerController {
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
             registry.addResourceHandler("/img/singerPic/**")
                     .addResourceLocations(Constants.SINGER_PIC_PATH);
+        }
+    }
+
+    /**
+     * 通过musicId查找歌手
+     * @param musicId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/singer/find",method = RequestMethod.GET)
+    public R findSingerByMusicId(@RequestParam("musicId") Long musicId){
+        Singer singer = this.singerService.findByMusicId(musicId);
+        if (singer == null){
+            return R.ok(1,"没有找到");
+        }else {
+            return R.ok().put("data",singer);
         }
     }
 

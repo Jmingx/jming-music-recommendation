@@ -16,6 +16,22 @@ public class CollectController {
     @Autowired
     private CollectServiceImpl collectService;
 
+    /**
+     * 判断歌曲是否已收藏
+     * @param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/collection/collected",method = RequestMethod.GET)
+    public R isCollected(@RequestParam("userId")Long userId,@RequestParam("musicId")Long musicId){
+        Collect collect = this.collectService.findByUserIdAndMusicId(userId,musicId);
+        if (collect == null){
+            return R.ok(0,"没有收藏");
+        }else {
+            return R.ok(1,"已被收藏");
+        }
+    }
+
     // 添加收藏的歌曲
     @ResponseBody
     @RequestMapping(value = "/collection/add", method = RequestMethod.POST)
@@ -73,10 +89,16 @@ public class CollectController {
 
     // 删除收藏的歌曲
     @RequestMapping(value = "/collection/delete", method = RequestMethod.GET)
-    public Object deleteCollection(HttpServletRequest req) {
-        String user_id = req.getParameter("userId").trim();
-        String music_id = req.getParameter("musicId").trim();
-        return collectService.deleteCollect(Integer.parseInt(user_id), Integer.parseInt(music_id));
+//    public Object deleteCollection(HttpServletRequest req) {
+    public R deleteCollection(@RequestParam("userId")Long userId,@RequestParam("musicId")Long musicId) {
+//        String user_id = req.getParameter("userId").trim();
+//        String music_id = req.getParameter("musicId").trim();
+//        return collectService.deleteCollect(Integer.parseInt(user_id), Integer.parseInt(music_id));
+        if (this.collectService.deleteCollect(userId,musicId)){
+            return R.ok(0,"取消收藏成功");
+        }else {
+            return R.error();
+        }
     }
 
     // 更新收藏

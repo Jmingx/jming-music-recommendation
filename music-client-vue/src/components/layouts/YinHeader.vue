@@ -23,8 +23,8 @@
     <span>{{userName}}</span>
     <el-dropdown class="header-right" v-if="token" trigger="click">
       <div class="user">
-<!--        <img :src="attachImageUrl(userPic)" alt="">-->
-        <img src="../../assets/images/user.jpg" alt="">
+        <img :src="attachImageUrl(userPic)" alt="">
+<!--        <img src="../../assets/images/user.jpg" alt="">-->
       </div>
       <template #dropdown>
         <el-dropdown-menu>

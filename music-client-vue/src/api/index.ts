@@ -26,12 +26,18 @@ const HttpManager = {
     getAllSinger: () => get('singer'),
     // 通过性别对歌手分类
     getSingerOfSex: (sex) => get(`singer/sex/detail?sex=${sex}`),
+    //通过歌曲Id获取歌手名
+    getSingerByMusicId:(musicId) => get(`singer/find?musicId=${musicId}`),
 
     // =======================> 收藏 API
     // 返回的指定用户ID的收藏列表
     getCollectionOfUser: (userId) => get(`collection/detail?userId=${userId}`),
     // 添加收藏的歌曲 type: 0 代表歌曲， 1 代表歌单
     setCollection: (params) => post(`collection/add`, params),
+    // 通过userId musicId获取收藏
+    getCollectionByUserIdAndMusicId:(userId,musicId) => get(`collection/collected?userId=${userId}&musicId=${musicId}`),
+    //取消收藏
+    deleteCollectByUserIdAndMusicId:(userId,musicId) => get(`collection/delete?userId=${userId}&musicId=${musicId}`),
 
     // =======================> 评分 API
     // 提交评分
@@ -67,13 +73,14 @@ const HttpManager = {
     // 下载音乐
     downloadMusic: (url) => get(url, {responseType: 'blob'}),
 
-    // ========================用户评分 API
+    // ========================>用户评分 API
     // 提交评分
     setMusicRank: (params) => post(`rankMusic/add`, params),
     // 获取指定歌曲的评分
     getRankOfMusicId: (musicId) => get(`rankMusic?musicId=${musicId}`),
     // 获取指定用户的歌单评分
     getUserRankByConsumerId: (consumerId, musicId) => get(`/rankMusic/user?consumerId=${consumerId}&musicListId=${musicId}`),
+
 
 }
 

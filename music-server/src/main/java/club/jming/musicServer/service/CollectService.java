@@ -13,7 +13,7 @@ public interface CollectService extends IService<Collect> {
 
     boolean updateCollectMsg(Collect collect);
 
-    boolean deleteCollect(Integer userId, Integer MusicId);
+    boolean deleteCollect(Long userId, Long MusicId);
 
     List<Collect> allCollect();
 

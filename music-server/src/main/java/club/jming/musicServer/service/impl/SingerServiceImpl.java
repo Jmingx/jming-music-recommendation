@@ -1,7 +1,9 @@
 package club.jming.musicServer.service.impl;
 
 import club.jming.musicServer.dao.SingerMapper;
+import club.jming.musicServer.domain.Music;
 import club.jming.musicServer.domain.Singer;
+import club.jming.musicServer.service.MusicService;
 import club.jming.musicServer.service.SingerService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,7 +17,7 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer>
         implements SingerService {
 
     @Autowired
-    private SingerMapper singerMapper;
+    private MusicService musicService;
 
     @Override
     public boolean updateSingerMsg(Singer singer) {
@@ -62,5 +64,12 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer>
     @Override
     public Integer getIdByName(String name) {
         return this.getOne(new QueryWrapper<Singer>().eq("singer_name", name)).getSingerId();
+    }
+
+    public Singer findByMusicId(Long musicId) {
+        QueryWrapper<Music> wrapper = new QueryWrapper<Music>();
+        wrapper.eq("music_id",musicId);
+        Music music = this.musicService.getOne(wrapper);
+        return this.getOne(new QueryWrapper<Singer>().eq("singer_id",music.getSingerId()));
     }
 }

@@ -4,6 +4,7 @@ import club.jming.musicServer.constant.Constants;
 import club.jming.musicServer.service.impl.ConsumerServiceImpl;
 import com.alibaba.fastjson.JSONObject;
 import club.jming.musicServer.domain.Consumer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DuplicateKeyException;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
+@Slf4j
 public class ConsumerController {
 
     @Autowired
@@ -232,7 +234,7 @@ public class ConsumerController {
             return jsonObject;
         }
         String fileName = System.currentTimeMillis() + avatorFile.getOriginalFilename();
-        String filePath = Constants.PROJECT_PATH + System.getProperty("file.separator") + "img" + System.getProperty("file.separator") + "avatorImages";
+        String filePath = System.getProperty("user.dir") + "/source/img/avatorImages";
         File file1 = new File(filePath);
         if (!file1.exists()) {
             file1.mkdir();

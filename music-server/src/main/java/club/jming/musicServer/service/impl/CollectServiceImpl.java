@@ -36,11 +36,11 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
     }
 
     @Override
-    public boolean deleteCollect(Integer userId, Integer musicId) {
+    public boolean deleteCollect(Long userId, Long musicId) {
 //        return collectMapper.deleteCollect(userId, MusicId) > 0 ? true : false;
         QueryWrapper<Collect> wrapper = new QueryWrapper<Collect>();
         wrapper.eq("user_id", userId).eq("music_id", musicId);
-        return collectMapper.delete(wrapper) > 0;
+        return collectMapper.delete(wrapper) >= 0;
     }
 
     @Override
@@ -54,5 +54,11 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
         wrapper.eq("user_id",userId);
 //        return collectMapper.collectionOfUser(userId);
         return this.list(wrapper);
+    }
+
+    public Collect findByUserIdAndMusicId(Long userId, Long musicId) {
+        QueryWrapper<Collect> wrapper = new QueryWrapper<Collect>();
+        wrapper.eq("user_id",userId).eq("music_id",musicId);
+        return this.getOne(wrapper);
     }
 }

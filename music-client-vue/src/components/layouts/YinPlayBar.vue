@@ -13,7 +13,7 @@
         </div>
         <!--播放开始结束时间-->
         <div v-if="songId">
-          <div class="song-info">{{ this.songTitle }} - {{ this.singerName }}</div>
+          <div class="song-info">{{ songTitle }} - {{singerName}}</div>
           <div class="time-info">{{ startTime }} / {{ endTime }}</div>
         </div>
       </div>
@@ -38,11 +38,9 @@
       </div>
       <div class="song-ctr song-edit">
         <!--收藏-->
-        <yin-icon :class="{ active: isCollection }" :icon="iconList.XIHUAN" @click="collection"></yin-icon>
+        <yin-icon :class="{ active: collected }" :icon="iconList.XIHUAN" @click="collection"></yin-icon>
         <!--下载-->
         <yin-icon :icon="iconList.XIAZAI" @click="downloadMusic"></yin-icon>
-        <!--歌曲列表-->
-        <yin-icon :icon="iconList.LIEBIAO" @click="changeAside"></yin-icon>
         <!--歌曲列表-->
         <yin-icon :icon="iconList.LIEBIAO" @click="changeAside"></yin-icon>
       </div>
@@ -85,6 +83,7 @@ export default defineComponent({
         LIEBIAO: ICON.LIEBIAO,
         XIHUAN: ICON.XIHUAN
       },
+      collected: false,
     }
   },
   components: {
@@ -107,7 +106,7 @@ export default defineComponent({
       "showAside", // 是否显示侧边栏
       "autoNext", // 用于触发自动播放下一首
       "isCollection" // 是否收藏
-    ])
+    ]),
   },
   watch: {
     // 切换播放状态的图标
@@ -130,6 +129,20 @@ export default defineComponent({
     }
   },
   methods: {
+    isCollected(currentMusic) {
+      //通过musicId,userId获取是否被收藏
+      HttpManager.getCollectionByUserIdAndMusicId(this.userId, currentMusic.musicId).then((data) => {
+        let res = JSON.parse(JSON.stringify(data));
+        console.log("data", res)
+        if (res && res.code == 0) {
+          this.collected = false
+        } else {
+          this.collected = true
+        }
+      });
+      console.log("into currentMusic",currentMusic,this.collected)
+    }
+    ,
     // 下载
     async downloadMusic() {
       const result = await HttpManager.downloadMusic(this.songUrl) as { data: any }
@@ -177,6 +190,7 @@ export default defineComponent({
           this.toPlay(this.currentPlayList[this.currentPlayIndex].musicAddress)
         }
       }
+      this.isCollected(this.currentPlayList[this.currentPlayIndex])
     },
     // 下一首
     next() {
@@ -194,13 +208,14 @@ export default defineComponent({
           this.toPlay(this.currentPlayList[0].musicAddress)
         }
       }
+      this.isCollected(this.currentPlayList[this.currentPlayIndex])
     },
     // 选中播放
     toPlay(url) {
-      console.log("currentPlayList",this.currentPlayList)
+      console.log("currentPlayList", this.currentPlayList)
       if (url && url !== this.songUrl) {
         const song = this.currentPlayList[this.currentPlayIndex]
-        console.log("song",song)
+        console.log("song", song)
         this.playMusic({
           id: song.musicId,
           url,
@@ -217,30 +232,51 @@ export default defineComponent({
     },
     async collection() {
       if (!this.checkStatus()) return
+      if (!this.collected) {
+        const params = new URLSearchParams()
+        params.append("userId", this.userId)
+        params.append("type", "0") // 0 代表歌曲， 1 代表歌单
+        params.append("musicId", this.songId)
 
-      const params = new URLSearchParams()
-      params.append("userId", this.userId)
-      params.append("type", "0") // 0 代表歌曲， 1 代表歌单
-      params.append("musicId", this.songId)
-
-      const result = await HttpManager.setCollection(params) as { code: number };
-      if (result.code === 1) {
-        (this as any).$store.commit("setIsCollection", true);
-        (this as any).$notify({
-          title: "收藏成功",
-          type: "success",
-        })
-      } else if (result.code === 2) {
-        (this as any).$notify({
-          title: "已收藏",
-          type: "warning"
-        })
+        const result = await HttpManager.setCollection(params) as { code: number };
+        if (result.code === 1) {
+          (this as any).$store.commit("setIsCollection", true);
+          (this as any).$notify({
+            title: "收藏成功",
+            type: "success",
+          })
+        } else if (result.code === 2) {
+          (this as any).$notify({
+            title: "已收藏",
+            type: "warning"
+          })
+        } else {
+          (this as any).$notify.error({
+            title: "收藏失败",
+            showClose: false,
+          })
+        }
       } else {
-        (this as any).$notify.error({
-          title: "收藏失败",
-          showClose: false,
-        })
+        //取消收藏
+        HttpManager.deleteCollectByUserIdAndMusicId(this.userId, this.currentPlayList[this.currentPlayIndex].musicId).then((data) => {
+          let res = JSON.parse(JSON.stringify(data));
+          console.log("data", res)
+          if (res && res.code == 0) {
+            (this as any).$notify({
+              title: "取消收藏",
+              type: "success",
+            })
+            this.collected = false;
+          } else {
+            (this as any).$notify.error({
+              title: "取消收藏失败",
+              showClose: false,
+            })
+          }
+        });
       }
+
+      this.isCollected(this.currentPlayList[this.currentPlayIndex])
     }
   }
 })

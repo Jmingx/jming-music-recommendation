@@ -55,6 +55,7 @@ export default defineComponent({
     }
 
     function handleAvatarSuccess(res, file) {
+      console.log("file",file)
       if (res.code === 1) {
         imageUrl.value = URL.createObjectURL(file.raw);
         proxy.$store.commit("setUserPic", res.avator);

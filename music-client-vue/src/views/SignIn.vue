@@ -125,6 +125,7 @@ export default defineComponent({
     }
 
     function setUserInfo(item) {
+      console.log("userInfo",item)
       proxy.$store.commit("setUserId", item.consumerId);
       proxy.$store.commit("setUsername", item.consumerUsername);
       proxy.$store.commit("setUserPic", item.consumerAvator);
