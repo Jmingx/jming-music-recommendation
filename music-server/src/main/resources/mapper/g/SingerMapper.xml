@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.jming.musicServer.dao.SingerMapper">
+
+    <resultMap id="BaseResultMap" type="club.jming.musicServer.domain.Singer">
+            <id property="singerId" column="singer_id" jdbcType="INTEGER"/>
+            <result property="singerName" column="singer_name" jdbcType="VARCHAR"/>
+            <result property="singerDescription" column="singer_description" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="imgAddress" column="img_address" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="INTEGER"/>
+            <result property="clickNumber" column="click_number" jdbcType="INTEGER"/>
+            <result property="showStatus" column="show_status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        singer_id,singer_name,singer_description,
+        update_time,img_address,gender,
+        click_number,show_status
+    </sql>
+</mapper>

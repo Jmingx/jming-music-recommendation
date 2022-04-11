@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.jming.musicServer.dao.ConsumerMapper">
+
+    <resultMap id="BaseResultMap" type="club.jming.musicServer.domain.Consumer">
+            <id property="consumerId" column="consumer_id" jdbcType="INTEGER"/>
+            <result property="consumerUsername" column="consumer_username" jdbcType="VARCHAR"/>
+            <result property="consumerPassword" column="consumer_password" jdbcType="VARCHAR"/>
+            <result property="consumerSex" column="consumer_sex" jdbcType="TINYINT"/>
+            <result property="consumerPhoneNum" column="consumer_phone_num" jdbcType="CHAR"/>
+            <result property="consumerEmail" column="consumer_email" jdbcType="CHAR"/>
+            <result property="consumerBirth" column="consumer_birth" jdbcType="TIMESTAMP"/>
+            <result property="consumerIntroduction" column="consumer_introduction" jdbcType="VARCHAR"/>
+            <result property="consumerLocation" column="consumer_location" jdbcType="VARCHAR"/>
+            <result property="consumerAvator" column="consumer_avator" jdbcType="VARCHAR"/>
+            <result property="consumerCreateTime" column="consumer_create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="showStatus" column="show_status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        consumer_id,consumer_username,consumer_password,
+        consumer_sex,consumer_phone_num,consumer_email,
+        consumer_birth,consumer_introduction,consumer_location,
+        consumer_avator,consumer_create_time,update_time,
+        show_status
+    </sql>
+</mapper>

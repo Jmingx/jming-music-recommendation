@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.jming.musicServer.dao.RankMusicMapper">
+
+    <resultMap id="BaseResultMap" type="club.jming.musicServer.domain.RankMusic">
+            <id property="rankMusicId" column="rank_music_id" jdbcType="BIGINT"/>
+            <result property="musicId" column="music_id" jdbcType="BIGINT"/>
+            <result property="consumerId" column="consumer_id" jdbcType="BIGINT"/>
+            <result property="rankMusicScore" column="rank_music_score" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        rank_music_id,music_id,consumer_id,
+        rank_music_score
+    </sql>
+
+    <select id="selectRankNum" resultType="java.lang.Integer">
+        SELECT COALESCE(count(rank_music_id),0) as num from basic_rank_music where music_id = #{musicId} ;
+    </select>
+
+    <select id="selectScoreSum" resultType="java.lang.Integer">
+        SELECT COALESCE(sum(rank_music_score),0) as score from basic_rank_music where music_id = #{musicId} ;
+    </select>
+</mapper>
