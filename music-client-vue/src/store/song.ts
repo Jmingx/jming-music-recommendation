@@ -110,6 +110,16 @@ export default {
     },
     actions: {
         playMusic: ({commit}, {id, url, pic, index, songTitle, singerName, lyric, currentSongList}) => {
+            //加载初始化分数，(music_id,user_id)作为唯一索引，如果不存在，则把this.disable=true
+            HttpManager.getRankOfMusicId(id).then((data) => {
+                const res = JSON.parse(JSON.stringify(data));
+                if (res && res.code == 0) {
+                    commit('setScore', res.score)
+                } else {
+                    console.log("score error", res.msg)
+                }
+            })
+
             //通过musicId获取singer
             HttpManager.getSingerByMusicId(id).then((data) => {
                 const res = JSON.parse(JSON.stringify(data));
@@ -121,16 +131,6 @@ export default {
                     console.log("error", res.msg)
                 }
             });
-
-            //加载初始化分数，(music_id,user_id)作为唯一索引，如果不存在，则把this.disable=true
-            HttpManager.getRankOfMusicId(id).then((data) => {
-                const res = JSON.parse(JSON.stringify(data));
-                if (res && res.code == 0) {
-                    commit('setScore', res.score)
-                } else {
-                    console.log("score error", res.msg)
-                }
-            })
 
             commit('setSongId', id)
             commit('setSongUrl', BASE_URL + url)

@@ -129,6 +129,36 @@ export default defineComponent({
 
     lyricArr.value = lyric.value ? parseLyric(lyric.value) : [];
 
+    // function change() {
+    //   if (curScore.value == 0){
+    //     return
+    //   }
+    //   // const { proxy } = getCurrentInstance();
+    //   console.log("change", curScore.value)
+    //   //上传分数
+    //   const params = new URLSearchParams();
+    //   params.append("musicId", songId.value);
+    //   params.append("consumerId", userId.value);
+    //   console.log("score", curScore);
+    //   params.append("score", curScore.value+"");
+    //   console.log("consumerId", params)
+    //   HttpManager.setMusicRank(params).then((data) => {
+    //         let res = JSON.parse(JSON.stringify(data));
+    //         if (res && res.code == 0) {
+    //             console.log("ok", curScore)
+    //           commit("setScore", score.value);
+    //           computed(() => store.getters.score);
+    //         } else if (res.code == 1) {
+    //           console.log("wrong", res.msg)
+    //           curScore.value = score.value
+    //         } else {
+    //           console.log("error", res.msg)
+    //           curScore.value = score.value
+    //         }
+    //       }
+    //   )
+    // }
+
     return {
       songPic,
       singerName,
@@ -139,11 +169,15 @@ export default defineComponent({
       colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
       userId,
       score,
-      curScore
+      curScore,
+      // change
     }
   },
   methods: {
     change() {
+      if (this.curScore == 0){
+        return
+      }
       // const { proxy } = getCurrentInstance();
       console.log("change", this.curScore)
       //上传分数
@@ -156,9 +190,9 @@ export default defineComponent({
       HttpManager.setMusicRank(params).then((data) => {
             let res = JSON.parse(JSON.stringify(data));
             if (res && res.code == 0) {
-              if (this.curScore != 0) {
                 console.log("ok", this.curScore)
-              }
+              // 修改store里的值
+              this.$store.commit("setScore",this.curScore)
             } else if (res.code == 1) {
               console.log("wrong", res.msg)
               this.curScore = this.score
