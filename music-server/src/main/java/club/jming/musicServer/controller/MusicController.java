@@ -1,7 +1,10 @@
 package club.jming.musicServer.controller;
 
+import club.jming.musicApi.domain.CfRate;
 import club.jming.musicServer.domain.Music;
+import club.jming.musicServer.service.KafkaService;
 import club.jming.musicServer.service.impl.MusicServiceImpl;
+import club.jming.musicServer.utils.R;
 import com.alibaba.fastjson.JSONObject;
 import club.jming.musicServer.constant.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class MusicController {
     @Autowired
     private MusicServiceImpl musicService;
 
+    @Autowired
+    private KafkaService kafkaService;
+
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
@@ -45,6 +51,17 @@ public class MusicController {
                     .addResourceLocations(Constants.SONG_PIC_PATH);
             registry.addResourceHandler("/song/**")
                     .addResourceLocations(Constants.SONG_PATH);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/music/play",method = RequestMethod.GET)
+    public R playMusic(@RequestParam("userId")Integer userId,@RequestParam("musicId")Integer musicId){
+        if (userId != null && musicId != null){
+            this.kafkaService.sendRate(CfRate.playCfRate(userId,musicId));
+            return R.ok();
+        }else {
+            return R.error(-1,"数据格式错误");
         }
     }
 

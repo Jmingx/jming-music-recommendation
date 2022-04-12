@@ -1,4 +1,5 @@
 import {get, post} from './request'
+import {useStore} from "vuex";
 
 const HttpManager = {
     // =======================> 用户 API
@@ -20,6 +21,8 @@ const HttpManager = {
     getSongListOfLikeTitle: (keywords) => get(`musicList/likeTitle/detail?title=${keywords}`),
     // 返回歌单里指定歌单ID的歌曲
     getListSongOfSongId: (musicListId) => get(`listSong/detail?musicListId=${musicListId}`),
+    // 播放歌曲得分
+    playMusic: (userId,musicId) => get(`music/play?userId=${userId}&musicId=${musicId}`),
 
     // =======================> 歌手 API
     // 返回所有歌手

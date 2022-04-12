@@ -76,4 +76,8 @@ public class CfRate implements Serializable {
     public static CfRate normalCfRate(Integer userId, Integer musicId, Double cfRate) {
         return new CfRate(userId,musicId,cfRate);
     }
+
+    public static CfRate playCfRate(Integer userId,Integer musicId){
+        return new CfRate(userId,musicId,Constant.PLAY_RATE);
+    }
 }

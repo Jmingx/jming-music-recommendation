@@ -18,6 +18,7 @@
 import {defineComponent, toRefs, computed} from "vue";
 import mixin from "@/mixins/mixin";
 import {HttpManager} from "@/api";
+import {useStore} from "vuex";
 
 export default defineComponent({
   props: {

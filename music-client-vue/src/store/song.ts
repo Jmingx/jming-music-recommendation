@@ -1,5 +1,7 @@
 import {ICON, BASE_URL} from '@/enums'
 import {HttpManager} from "@/api";
+import {useStore} from "vuex";
+import {computed} from "vue";
 
 export default {
     state: {
@@ -110,6 +112,7 @@ export default {
     },
     actions: {
         playMusic: ({commit}, {id, url, pic, index, songTitle, singerName, lyric, currentSongList}) => {
+
             //加载初始化分数，(music_id,user_id)作为唯一索引，如果不存在，则把this.disable=true
             HttpManager.getRankOfMusicId(id).then((data) => {
                 const res = JSON.parse(JSON.stringify(data));

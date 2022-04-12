@@ -16,6 +16,7 @@
         <module>music-server</module>
         <module>music-generator</module>
         <module>music-api</module>
+        <module>music-cf</module>
     </modules>
 
 </project>

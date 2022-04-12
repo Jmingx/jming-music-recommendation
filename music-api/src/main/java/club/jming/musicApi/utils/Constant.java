@@ -22,4 +22,12 @@ public class Constant {
      * 评论区点赞得分
      */
     public static final Double COMMENT_LIKE_RATE = 1.0d;
+    /**
+     * 播放歌曲得分
+     */
+    public static final Double PLAY_RATE = 0.5;
+
+    public static final String CF_TOPIC = "topic.cf";
+
+    public static final String CF_GROUP = "topic.group";
 }
