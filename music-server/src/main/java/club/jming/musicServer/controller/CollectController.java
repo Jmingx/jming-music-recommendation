@@ -1,6 +1,8 @@
 package club.jming.musicServer.controller;
 
-import club.jming.musicServer.service.impl.CollectServiceImpl;
+import club.jming.musicApi.domain.CfRate;
+import club.jming.musicServer.service.CollectService;
+import club.jming.musicServer.service.KafkaService;
 import club.jming.musicServer.utils.R;
 import com.alibaba.fastjson.JSONObject;
 import club.jming.musicServer.domain.Collect;
@@ -14,7 +16,10 @@ import java.util.Date;
 public class CollectController {
 
     @Autowired
-    private CollectServiceImpl collectService;
+    private CollectService collectService;
+
+    @Autowired
+    private KafkaService kafkaService;
 
     /**
      * 判断歌曲是否已收藏
@@ -37,28 +42,28 @@ public class CollectController {
     @RequestMapping(value = "/collection/add", method = RequestMethod.POST)
     public Object addCollection(HttpServletRequest req) {
         JSONObject jsonObject = new JSONObject();
-        String user_id = req.getParameter("userId");
+        String userId = req.getParameter("userId");
         String type = req.getParameter("type");
-        String music_id = req.getParameter("musicId");
-        String music_list_id = req.getParameter("musicListId");
+        String musicId = req.getParameter("musicId");
+        String musicListId = req.getParameter("musicListId");
 
-        if (music_id == "") {
+        if (musicId == "") {
             jsonObject.put("code", 0);
             jsonObject.put("msg", "收藏歌曲为空");
             return jsonObject;
-        } else if (collectService.existMusicId(Integer.parseInt(user_id), Integer.parseInt(music_id))) {
+        } else if (collectService.existMusicId(Integer.parseInt(userId), Integer.parseInt(musicId))) {
             jsonObject.put("code", 2);
             jsonObject.put("msg", "已收藏");
             return jsonObject;
         }
 
         Collect collect = new Collect();
-        collect.setUserId(Integer.parseInt(user_id));
+        collect.setUserId(Integer.parseInt(userId));
         collect.setType(new Byte(type));
         if (new Byte(type) == 0) {
-            collect.setMusicId(Integer.parseInt(music_id));
+            collect.setMusicId(Integer.parseInt(musicId));
         } else if (new Byte(type) == 1) {
-            collect.setMusicListId(Integer.parseInt(music_list_id));
+            collect.setMusicListId(Integer.parseInt(musicListId));
         }
         collect.setUpdateTime(new Date());
 
@@ -66,6 +71,7 @@ public class CollectController {
         if (res) {
             jsonObject.put("code", 1);
             jsonObject.put("msg", "收藏成功");
+            kafkaService.sendRate(CfRate.collectedCfRate(Integer.parseInt(userId), Integer.parseInt(musicId)));
             return jsonObject;
         } else {
             jsonObject.put("code", 0);

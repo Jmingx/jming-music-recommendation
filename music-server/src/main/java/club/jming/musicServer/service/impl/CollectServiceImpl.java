@@ -56,6 +56,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect>
         return this.list(wrapper);
     }
 
+    @Override
     public Collect findByUserIdAndMusicId(Long userId, Long musicId) {
         QueryWrapper<Collect> wrapper = new QueryWrapper<Collect>();
         wrapper.eq("user_id",userId).eq("music_id",musicId);

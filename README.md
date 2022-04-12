@@ -119,3 +119,10 @@ vue el-switch没有按正确要求显示，当showStatus=1时开启，否则关�
 如下绑定
 :active-value=1
 :inactive-value=0
+
+### 15. 问题描述：
+用aop+注解形式实现打分（music-cf）失败
+### 原因分析：
+music-server接口实现形式不统一
+### 解决方法
+不使用aop+注解实现

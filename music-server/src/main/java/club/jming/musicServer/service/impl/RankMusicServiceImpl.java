@@ -26,15 +26,14 @@ public class RankMusicServiceImpl extends ServiceImpl<RankMusicMapper, RankMusic
     private RankMusicMapper rankMusicMapper;
 
     @Override
-    public boolean addRank(RankMusic rankMusic) {
+    public int addRank(RankMusic rankMusic) {
         UpdateWrapper<RankMusic> wrapper = new UpdateWrapper<RankMusic>();
         if (this.count(new QueryWrapper<RankMusic>().eq("music_id",rankMusic.getMusicId()).eq("consumer_id",rankMusic.getConsumerId())) > 0){
-            return this.update(rankMusic,wrapper);
+            return 1;
         }else {
-            return this.save(rankMusic);
+            this.save(rankMusic);
+            return 0;
         }
-//        wrapper.eq("music_id",rankMusic.getMusicId()).eq("consumer_id",rankMusic.getConsumerId());
-//        return this.update(rankMusic,wrapper);
     }
 
     @Override

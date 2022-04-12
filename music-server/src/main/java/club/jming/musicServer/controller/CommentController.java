@@ -1,5 +1,7 @@
 package club.jming.musicServer.controller;
 
+import club.jming.musicApi.domain.CfRate;
+import club.jming.musicServer.service.KafkaService;
 import club.jming.musicServer.service.impl.CommentServiceImpl;
 import com.alibaba.fastjson.JSONObject;
 import club.jming.musicServer.domain.Comment;
@@ -17,24 +19,27 @@ public class CommentController {
     @Autowired
     private CommentServiceImpl commentService;
 
+    @Autowired
+    private KafkaService kafkaService;
+
     // 提交评论
     @ResponseBody
     @RequestMapping(value = "/comment/add", method = RequestMethod.POST)
     public Object addComment(HttpServletRequest req) {
         JSONObject jsonObject = new JSONObject();
-        String user_id = req.getParameter("userId");
+        String userId = req.getParameter("userId");
         String type = req.getParameter("type");
-        String music_list_id = req.getParameter("musicListId");
-        String music_id = req.getParameter("musicId");
+        String musicListId = req.getParameter("musicListId");
+        String musicId = req.getParameter("musicId");
         String content = req.getParameter("content").trim();
 
         Comment comment = new Comment();
-        comment.setUserId(Integer.parseInt(user_id));
+        comment.setUserId(Integer.parseInt(userId));
         comment.setCommentType(new Byte(type));
         if (new Byte(type) == 0) {
-            comment.setMusicId(Integer.parseInt(music_id));
+            comment.setMusicId(Integer.parseInt(musicId));
         } else if (new Byte(type) == 1) {
-            comment.setMusicListId(Integer.parseInt(music_list_id));
+            comment.setMusicListId(Integer.parseInt(musicListId));
         }
         comment.setCommentContent(content);
         comment.setUpdateTime(new Date());
@@ -42,6 +47,7 @@ public class CommentController {
         if (res) {
             jsonObject.put("code", 1);
             jsonObject.put("msg", "评论成功");
+            this.kafkaService.sendRate(CfRate.commentCfRate(Integer.parseInt(userId),Integer.parseInt(musicId)));
             return jsonObject;
         } else {
             jsonObject.put("code", 0);
@@ -85,6 +91,7 @@ public class CommentController {
         if (res) {
             jsonObject.put("code", 1);
             jsonObject.put("msg", "点赞成功");
+            //TODO 增加打分
             return jsonObject;
         } else {
             jsonObject.put("code", 0);

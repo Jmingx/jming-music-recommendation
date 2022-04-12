@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface RankMusicService extends IService<RankMusic> {
 
-    boolean addRank(RankMusic rankMusic);
+    int addRank(RankMusic rankMusic);
 
     Object rankOfMusicId(long parseLong);
 

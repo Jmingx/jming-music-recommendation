@@ -11,6 +11,7 @@ export default {
         singerName: '', //  歌手名
         isCollection: false, // 是否收藏
         lyric: [], // 处理后的歌词数据
+        score: 0,//评分
 
         /** 音乐播放信息 */
         isPlay: false, // 播放状态
@@ -34,6 +35,7 @@ export default {
         singerName: state => state.singerName,
         isCollection: state => state.isCollection,
         lyric: state => state.lyric,
+        score: state => state.score,
 
         isPlay: state => state.isPlay,
         playBtnIcon: state => state.playBtnIcon,
@@ -72,6 +74,10 @@ export default {
         setLyric: (state, lyric) => {
             state.lyric = lyric
         },
+        setScore: (state, score) => {
+            state.score = score
+        }
+        ,
 
         setIsPlay: (state, isPlay) => {
             state.isPlay = isPlay
@@ -106,15 +112,25 @@ export default {
         playMusic: ({commit}, {id, url, pic, index, songTitle, singerName, lyric, currentSongList}) => {
             //通过musicId获取singer
             HttpManager.getSingerByMusicId(id).then((data) => {
-                const   res = JSON.parse(JSON.stringify(data));
-                console.log("dataMusic",res)
-                if (res && res.code == 0){
+                const res = JSON.parse(JSON.stringify(data));
+                console.log("dataMusic", res)
+                if (res && res.code == 0) {
                     commit('setSingerName', res.data.singerName);
-                    console.log("ok",res.msg)
-                }else {
-                    console.log("error",res.msg)
+                    console.log("ok", res.msg)
+                } else {
+                    console.log("error", res.msg)
                 }
             });
+
+            //加载初始化分数，(music_id,user_id)作为唯一索引，如果不存在，则把this.disable=true
+            HttpManager.getRankOfMusicId(id).then((data) => {
+                const res = JSON.parse(JSON.stringify(data));
+                if (res && res.code == 0) {
+                    commit('setScore', res.score)
+                } else {
+                    console.log("score error", res.msg)
+                }
+            })
 
             commit('setSongId', id)
             commit('setSongUrl', BASE_URL + url)

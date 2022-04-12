@@ -10,14 +10,13 @@
   </div>
   <div class="container">
     <div class="lyric-container">
-
       <el-container>
         <el-header>
           <div class="grid-content bg-purple-dark">
             <div class="block" align="center">
               <span class="demonstration">评分：</span>
               <el-rate
-                  v-model=score
+                  v-model=curScore
                   :max=10
                   :colors="colors"
                   show-score="true"
@@ -61,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref, watch} from 'vue';
+import {computed, defineComponent, getCurrentInstance, ref, watch} from 'vue';
 import {useStore} from "vuex";
 import Comment from "@/components/Comment.vue";
 import {parseLyric} from "@/utils";
@@ -79,7 +78,7 @@ export default defineComponent({
   },
   data() {
     return {
-      score: 0,
+      // curScore: 0,
       disable: false,
     }
   },
@@ -97,11 +96,18 @@ export default defineComponent({
     const singerName = computed(() => store.getters.singerName); // 歌手名
     const songPic = computed(() => store.getters.songPic); // 歌曲图片
     const userId = computed(() => store.getters.userId);
+    const score = computed(() => store.getters.score);
+    const curScore = ref(0);
 
     watch(songId, () => {
-      console.log("watch cur",currentPlayList.value[currentPlayIndex.value])
+      console.log("watch cur", currentPlayList.value[currentPlayIndex.value])
       lyricArr.value = parseLyric(currentPlayList.value[currentPlayIndex.value].musicLyric);
     })
+
+    watch(score,()=>{
+      curScore.value = score.value
+    })
+
     // 处理歌词位置及颜色
     watch(curTime, () => {
       if (lyricArr.value.length !== 0) {
@@ -131,52 +137,57 @@ export default defineComponent({
       lyricArr,
       songId,
       colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
-      userId
+      userId,
+      score,
+      curScore
     }
   },
   methods: {
     change() {
-      console.log("change", this.score)
+      // const { proxy } = getCurrentInstance();
+      console.log("change", this.curScore)
       //上传分数
       const params = new URLSearchParams();
       params.append("musicId", this.songId);
       params.append("consumerId", this.userId);
-      console.log("score", this.score)
-      params.append("score", this.score.toString());
-
+      console.log("score", this.curScore);
+      params.append("score", this.curScore.toString());
+      console.log("consumerId", params)
       HttpManager.setMusicRank(params).then((data) => {
             let res = JSON.parse(JSON.stringify(data));
             if (res && res.code == 0) {
-              if (this.score != 0) {
-                // this.disable = true;
-                console.log("ok", this.score)
-                this.init();
+              if (this.curScore != 0) {
+                console.log("ok", this.curScore)
               }
+            } else if (res.code == 1) {
+              console.log("wrong", res.msg)
+              this.curScore = this.score
             } else {
               console.log("error", res.msg)
+              this.curScore = this.score
             }
           }
       )
     },
 
-    init() {
-      //加载初始化分数，(music_id,user_id)作为唯一索引，如果不存在，则把this.disable=true
-      HttpManager.getRankOfMusicId(this.songId).then((data) => {
-        let res = JSON.parse(JSON.stringify(data));
-        if (res && res.code == 0) {
-          this.score = res.score;
-          if (this.score != 0) {
-            // this.disable = true;
-            console.log("ok", this.score)
-          }
-        } else {
-          console.log("error", res.msg)
-        }
-      })
-    }
+    // init() {
+    //   //加载初始化分数，(music_id,user_id)作为唯一索引，如果不存在，则把this.disable=true
+    //   HttpManager.getRankOfMusicId(this.songId).then((data) => {
+    //     let res = JSON.parse(JSON.stringify(data));
+    //     if (res && res.code == 0) {
+    //       this.score = res.score;
+    //       if (this.score != 0) {
+    //         // this.disable = true;
+    //         console.log("ok", this.score)
+    //       }
+    //     } else {
+    //       console.log("error", res.msg)
+    //     }
+    //   })
+    // }
   },
-  mounted() {
-    this.init();
+  created() {
+    // this.init();
   }
 });
 </script>

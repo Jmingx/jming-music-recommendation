@@ -1,7 +1,9 @@
 package club.jming.musicServer.controller;
 
+import club.jming.musicApi.domain.CfRate;
 import club.jming.musicServer.domain.RankList;
 import club.jming.musicServer.domain.RankMusic;
+import club.jming.musicServer.service.KafkaService;
 import club.jming.musicServer.service.RankMusicService;
 import club.jming.musicServer.utils.R;
 import com.alibaba.fastjson.JSONObject;
@@ -21,6 +23,9 @@ public class RankMusicController {
     @Autowired
     private RankMusicService rankMusicService;
 
+    @Autowired
+    private KafkaService kafkaService;
+
     // 提交评分
     @ResponseBody
     @RequestMapping(value = "/rankMusic/add", method = RequestMethod.POST)
@@ -35,14 +40,19 @@ public class RankMusicController {
         rankMusic.setConsumerId(Long.parseLong(consumerId));
         rankMusic.setRankMusicScore(Integer.parseInt(score));
 
-        boolean res = rankMusicService.addRank(rankMusic);
+        Integer res = rankMusicService.addRank(rankMusic);
 
-        if (res) {
-            jsonObject.put("code", 1);
-            jsonObject.put("msg", "评价成功");
-            return jsonObject;
-        } else {
+        if (res == 0) {
             jsonObject.put("code", 0);
+            jsonObject.put("msg", "评价成功");
+            kafkaService.sendRate(CfRate.normalCfRate(Integer.parseInt(consumerId),Integer.parseInt(musicId),Double.parseDouble(score)));
+            return jsonObject;
+        } else if (res == 1){
+            jsonObject.put("code", 1);
+            jsonObject.put("msg", "已评价");
+            return jsonObject;
+        }else {
+            jsonObject.put("code", -1);
             jsonObject.put("msg", "评价失败");
             return jsonObject;
         }

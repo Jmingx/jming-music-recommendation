@@ -49,8 +49,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue"
-import {mapGetters} from "vuex"
+import {computed, defineComponent} from "vue"
+import {mapGetters, useStore} from "vuex"
 import mixin from "@/mixins/mixin"
 import YinIcon from "./YinIcon.vue"
 import {HttpManager} from "@/api"

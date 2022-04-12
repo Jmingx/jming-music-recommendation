@@ -18,4 +18,6 @@ public interface CollectService extends IService<Collect> {
     List<Collect> allCollect();
 
     List<Collect> collectionOfUser(Integer userId);
+
+    Collect findByUserIdAndMusicId(Long userId, Long musicId);
 }

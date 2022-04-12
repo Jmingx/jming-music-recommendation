@@ -1,5 +1,7 @@
 package club.jming.musicServer.controller;
 
+import club.jming.musicApi.domain.CfRate;
+import club.jming.musicServer.service.KafkaService;
 import club.jming.musicServer.service.impl.RankListServiceImpl;
 import com.alibaba.fastjson.JSONObject;
 import club.jming.musicServer.domain.RankList;
