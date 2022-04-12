@@ -14,7 +14,8 @@
         <module>music-common</module>
         <module>music-admin</module>
         <module>music-server</module>
-        <module>music-gengrator</module>
+        <module>music-generator</module>
+        <module>music-api</module>
     </modules>
 
 </project>
