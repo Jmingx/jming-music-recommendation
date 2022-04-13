@@ -1,5 +1,14 @@
 # 应用名称
 spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/music_basic?serverTimezone=Asia/Shanghai
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
   application:
     #服务提供者声明名称：必须保证服务名称的唯一性，它的名称是dubbo内部使用的唯一标识
     name: music-cf
@@ -46,6 +55,8 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       # 值的反序列化方式
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      # 一次 poll 最多返回的记录数
+#      max-poll-records: 10
     listener:
       # 在侦听器容器中运行的线程数。
       concurrency: 5

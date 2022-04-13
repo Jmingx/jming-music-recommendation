@@ -20,5 +20,5 @@ public interface RecommendationRPCService {
      * @param topK 推荐数量
      * @return 推荐列表
      */
-    List<Music> getRecommendationMusic(Integer topK);
+    List<Music> getRecommendationMusic(Integer topK,Integer userId);
 }

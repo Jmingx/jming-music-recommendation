@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="generator.mapper.BasicMusicMapper">
+<mapper namespace="club.jming.musicCf.mapper.BasicMusicMapper">
 
     <resultMap id="BaseResultMap" type="club.jming.musicSpider.domain.BasicMusic">
             <id property="musicId" column="music_id" jdbcType="INTEGER"/>

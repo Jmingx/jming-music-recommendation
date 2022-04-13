@@ -15,12 +15,16 @@ import java.io.Serializable;
  */
 @Data
 public class CfRate implements Serializable {
-
     private Integer rateId;
 
     private Integer userId;
 
     private Integer musicId;
+
+    /**
+     * 评分
+     */
+    private Double cfRate;
 
     public CfRate(Integer userId, Integer musicId, Double cfRate) {
         this.userId = userId;
@@ -30,11 +34,6 @@ public class CfRate implements Serializable {
 
     public CfRate() {
     }
-
-    /**
-     * 评分
-     */
-    private Double cfRate;
 
     /**
      * 收藏得分

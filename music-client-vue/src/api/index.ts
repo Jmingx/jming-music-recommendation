@@ -88,7 +88,7 @@ const HttpManager = {
 
     // ========================>推荐系统 API
     // 获取推荐列表
-    getRecommendationList:(topK)=>get(`recommendation?topK=${topK}`)
+    getRecommendationList:(topK,userId)=>get(`recommendation?topK=${topK}&userId=${userId}`)
 }
 
 export {HttpManager}

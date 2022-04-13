@@ -12,23 +12,26 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, onMounted} from "vue";
+import {ref, onMounted, computed} from "vue";
 import PlayList from "@/components/PlayList.vue";
 import {swiperList, NAV_NAME} from "@/enums";
 import {HttpManager} from "@/api";
 import mixin from "@/mixins/mixin";
+import {useStore} from "vuex";
 
+const store = useStore();
 const songList = ref([]); // 歌单列表
 const singerList = ref([]); // 歌手列表
 const recommendationList = ref([]); //推荐列表
 const {changeIndex} = mixin();
+const userId = computed(() => store.getters.userId);
 try {
-  HttpManager.getRecommendationList(10).then((data) => {
+  HttpManager.getRecommendationList(10,userId.value).then((data) => {
     let res = JSON.parse(JSON.stringify(data));
     // console.log("data",res)
     if (res && res.code == 0) {
       // console.log("ok",res.msg)
-      recommendationList.value = (res.data as any[]).sort().slice(0, 10);
+      recommendationList.value = (res.data as any[]).slice(0, 10);
     } else {
       console.log("error", res.msg)
     }

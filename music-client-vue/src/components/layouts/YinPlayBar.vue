@@ -38,7 +38,7 @@
       </div>
       <div class="song-ctr song-edit">
         <!--收藏-->
-        <yin-icon :class="{ active: collected }" :icon="iconList.XIHUAN" @click="collection"></yin-icon>
+        <yin-icon v-if="userId" :class="{ active: collected }" :icon="iconList.XIHUAN" @click="collection"></yin-icon>
         <!--下载-->
         <yin-icon :icon="iconList.XIAZAI" @click="downloadMusic"></yin-icon>
         <!--歌曲列表-->
@@ -134,10 +134,10 @@ export default defineComponent({
       HttpManager.getCollectionByUserIdAndMusicId(this.userId, currentMusic.musicId).then((data) => {
         let res = JSON.parse(JSON.stringify(data));
         console.log("data", res)
-        if (res && res.code == 0) {
-          this.collected = false
-        } else {
+        if (res && res.code == 1) {
           this.collected = true
+        } else {
+          this.collected = false
         }
       });
       console.log("into currentMusic",currentMusic,this.collected)

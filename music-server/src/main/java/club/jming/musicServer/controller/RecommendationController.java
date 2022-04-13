@@ -27,11 +27,11 @@ public class RecommendationController {
     private RecommendationRPCService rpcService;
 
     @RequestMapping(value = "/recommendation",method = RequestMethod.GET)
-    public R list(@RequestParam("topK")Integer topK){
+    public R list(@RequestParam("topK")Integer topK,@RequestParam(value = "userId",required = false)Integer userId){
         if (topK == null){
             return R.error(-1,"传入参数topK为null");
         }else {
-            List<Music> musicList = rpcService.getRecommendationMusic(topK);
+            List<Music> musicList = rpcService.getRecommendationMusic(topK,userId);
             return R.ok().put("data",musicList);
         }
     }

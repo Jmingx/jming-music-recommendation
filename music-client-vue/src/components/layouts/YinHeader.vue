@@ -20,7 +20,7 @@
         {{ item.name }}
       </li>
     </ul>
-    <span>{{userName}}</span>
+    <span v-if="token">{{userName}}</span>
     <el-dropdown class="header-right" v-if="token" trigger="click">
       <div class="user">
         <img :src="attachImageUrl(userPic)" alt="">
@@ -95,6 +95,9 @@ export default defineComponent({
 
       if (path == SIGN_OUT) {
         proxy.$store.commit("setToken", false)
+        // 退出登录，设置userId为空
+        proxy.$store.commit("setUserId", '')
+
         changeIndex(NAV_NAME.HOME)
         routerManager(HOME, { path: HOME })
         } else {

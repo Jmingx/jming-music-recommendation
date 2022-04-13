@@ -28,7 +28,6 @@ public class KafkaProducer {
 
     public void send(CfRate rate) {
         String cfRate = JSONObject.toJSONString(rate);
-        log.info("准备发送消息为：{}", cfRate);
         //发送消息
         ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(Constant.CF_TOPIC, cfRate);
         future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {

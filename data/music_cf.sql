@@ -11,7 +11,8 @@ create table if not exists cf_user_similarity
     similarity_id int auto_increment comment 'Id' primary key,
     user_id       int null comment '用户Id',
     user_ref_id   int null comment '相关用户Id',
-    similarity    double comment '相似度'
+    similarity    double comment '相似度',
+    UNIQUE KEY unique_key (user_id,user_ref_id)
 ) comment '用户相似表，userCF';
 
 create table if not exists cf_music_similarity
