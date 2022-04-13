@@ -6,7 +6,7 @@
     </el-carousel-item>
   </el-carousel>
   <!--  推荐列表-->
-  <play-list class="section" title="推荐" path="singer-detail" :playList="singerList"></play-list>
+  <play-list class="section" title="推荐" path="lyric" :playList="recommendationList"></play-list>
   <!--热门歌单-->
   <play-list class="section" title="歌手" path="singer-detail" :playList="singerList"></play-list>
 </template>
@@ -20,8 +20,21 @@ import mixin from "@/mixins/mixin";
 
 const songList = ref([]); // 歌单列表
 const singerList = ref([]); // 歌手列表
+const recommendationList = ref([]); //推荐列表
 const {changeIndex} = mixin();
 try {
+  HttpManager.getRecommendationList(10).then((data) => {
+    let res = JSON.parse(JSON.stringify(data));
+    // console.log("data",res)
+    if (res && res.code == 0) {
+      // console.log("ok",res.msg)
+      recommendationList.value = (res.data as any[]).sort().slice(0, 10);
+    } else {
+      console.log("error", res.msg)
+    }
+
+  });
+
   HttpManager.getSongList().then((res) => {
     songList.value = (res as any[]).sort().slice(0, 10);
   });

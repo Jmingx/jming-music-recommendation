@@ -75,6 +75,8 @@ const HttpManager = {
     getSongOfSingerName: (keywords) => get(`music/singerName/detail?name=${keywords}`),
     // 下载音乐
     downloadMusic: (url) => get(url, {responseType: 'blob'}),
+    // 返回所有歌曲
+    getMusic:()=>get(`music`),
 
     // ========================>用户评分 API
     // 提交评分
@@ -84,7 +86,9 @@ const HttpManager = {
     // 获取指定用户的歌单评分
     getUserRankByConsumerId: (consumerId, musicId) => get(`/rankMusic/user?consumerId=${consumerId}&musicListId=${musicId}`),
 
-
+    // ========================>推荐系统 API
+    // 获取推荐列表
+    getRecommendationList:(topK)=>get(`recommendation?topK=${topK}`)
 }
 
 export {HttpManager}

@@ -172,9 +172,9 @@ export default defineComponent({
     },
     // 上一首
     prev() {
-      console.log("list:", this.currentPlayList, this.currentPlayIndex)
-      console.log("songId", this.songId)
-      console.log("title", this.songTitle)
+      // console.log("list:", this.currentPlayList, this.currentPlayIndex)
+      // console.log("songId", this.songId)
+      // console.log("title", this.songTitle)
       if (this.playState === ICON.LUANXU) {
         let playIndex = Math.floor(Math.random() * this.currentPlayList.length)
         playIndex = playIndex === this.currentPlayIndex ? playIndex + 1 : playIndex

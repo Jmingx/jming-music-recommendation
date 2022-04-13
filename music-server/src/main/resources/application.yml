@@ -1,4 +1,13 @@
 spring:
+  #服务提供者声明名称：必须保证服务名称的唯一性，它的名称是dubbo内部使用的唯一标识
+  application:
+    name: music-server
+  #指定zookeeper注册中心地址和端口号
+  #设置dubbo的配置
+  dubbo:
+    registry: zookeeper://vlocalhost:2181
+
+
   datasource:
     url: jdbc:mysql://localhost:3306/music_basic?serverTimezone=Asia/Shanghai
     username: root

@@ -1,7 +1,18 @@
 # 应用名称
 spring:
   application:
+    #服务提供者声明名称：必须保证服务名称的唯一性，它的名称是dubbo内部使用的唯一标识
     name: music-cf
+#设置dubbo的配置
+  #声明当前工程是一个服务提供者
+  dubbo:
+    server: true
+  #设置访问服务的协议及端口号，dubbo官方推荐使用的是dubbo协议，端口号默认20880
+    protocol:
+      name: dubbo
+      port: 20880
+  #指定zookeeper注册中心地址和端口号
+    registry: zookeeper://vlocalhost:2181
 
   kafka:
     bootstrap-servers: vlocalhost:9092
