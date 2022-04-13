@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -60,21 +61,26 @@ public class RecommendationRPCServiceImpl implements RecommendationRPCService {
                  *  1. topKItems.size() < target ? 5. : topKItems;
                  *  2. 查库，获取最高rate target个itemId，补充到topKItems
                  */
-                List<Integer> addList = cfRateService.getTopRate(topK);
-                for (int i = 0; i < topK; i++) {
-                    if (i>=topKItems.size()){
-                        topKItems.add(addList.get(i-topKItems.size()));
-                    }
-                }
+//                List<Integer> addList = cfRateService.getTopRate(topK);
+//                for (int i = 0; i < topK; i++) {
+//                    if (i>=topKItems.size()){
+//                        topKItems.add(addList.get(i-topKItems.size()));
+//                    }
+//                }
             }
-            musicList.addAll(this.musicService.getByIdList(topKItems));
-
+            Collection<? extends Music> list = this.musicService.getByIdList(topKItems);
+            if (list!=null){
+                musicList.addAll(list);
+            }
             for (Music music : musicList) {
                 sb.append("music-name:"+music.getMusicName()+"\r\n");
             }
             log.info("musicList:{}",sb.toString());
         }else {
-            musicList.addAll(this.musicService.getByIdList(cfRateService.getTopRate(topK)));
+            Collection<? extends Music> list = this.musicService.getByIdList(cfRateService.getTopRate(topK));
+            if (list != null){
+                musicList.addAll(list);
+            }
             for (Music music : musicList) {
                 sb.append("music-name:"+music.getMusicName()+"\r\n");
             }

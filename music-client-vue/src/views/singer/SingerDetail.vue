@@ -43,6 +43,7 @@ export default defineComponent({
     const songDetails = computed(() => store.getters.songDetails) as any;
 
     onMounted(async () => {
+      console.log("songDetails",songDetails.value)
       try {
         const result = (await HttpManager.getSongOfSingerId(songDetails.value.singerId)) as any[];
         currentSongList.value = result;

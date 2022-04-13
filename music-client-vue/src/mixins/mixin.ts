@@ -80,7 +80,6 @@ export default function () {
     // 播放
     function playMusic({id, url, pic, index, name, lyric, currentSongList}) {
 
-        console.log("===============", userId.value)
         HttpManager.playMusic(userId.value, id).then((data) => {
             const res = JSON.parse(JSON.stringify(data));
             if (res && res.code == 0) {
@@ -89,7 +88,6 @@ export default function () {
                 console.log("播放失败", res.msg)
             }
         })
-        console.log("-----------------")
 
         const songTitle = getSongTitle(name);
         const singerName = getSingerName(name);

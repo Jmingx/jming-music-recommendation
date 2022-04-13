@@ -39,9 +39,6 @@ public class RefreshSimilarityTask {
         List<CfRate> cfRates = this.cfRateService.list();
         Map<Integer, Map<Integer, Double>> dataMap = RecommendationUtil.accountingUserItemRate(cfRates);
         List<CfUserSimilarity> similarityList = RecommendationUtil.calculatePearsonCorrelationCoefficient(dataMap);
-        if (similarityList == null || similarityList.size() < 1){
-            return;
-        }
         cfUserSimilarityService.updateSimilarity(similarityList);
         log.info("定时任务调度 refresh()");
     }

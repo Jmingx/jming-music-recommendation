@@ -188,8 +188,10 @@ public class RecommendationUtil {
         }
 
         //1. 把当前用户的打分加入items
-        for (Integer itemId : dataMap.get(userId).keySet()) {
-            items.put(itemId, dataMap.get(userId).get(itemId));
+        if (dataMap.containsKey(userId) && dataMap.get(userId).size()>0){
+            for (Integer itemId : dataMap.get(userId).keySet()) {
+                items.put(itemId, dataMap.get(userId).get(itemId));
+            }
         }
 
         log.info("当前用户的打分列表:{}",items);
@@ -211,7 +213,7 @@ public class RecommendationUtil {
         // 相似度
         double similarity = 0d;
         // user平均分
-        double userAvlRate = avlMap.get(userId);
+        double userAvlRate = avlMap.getOrDefault(userId,0d);
         // userRef平均分
         double userRefAvlRate = 0d;
 

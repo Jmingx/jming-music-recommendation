@@ -56,12 +56,14 @@ export default defineComponent({
 
     // ==================================
     function goAblum(item) {
-      // proxy.$store.commit("setSongDetails", item);
+      proxy.$store.commit("setSongDetails", item);
       console.log("item", item.musicId || item.singerId, item);
       // 点击歌曲，播放并且把推荐列表放入当前列表
       if (item.musicId) {
+        console.log("into musicId")
         handleClick(item);
       } else {
+        console.log("into else")
         routerManager(path.value, {path: `/${path.value}/${item.singerId}`});
       }
     }
